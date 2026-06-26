@@ -262,7 +262,153 @@ function BackBtn({ onBack }) {
 
 // ─── Screens ──────────────────────────────────────────────────
 
-function HomeScreen({ setScreen, quests, coins, user }) {
+
+// ─── Avatars émotions ─────────────────────────────────────────
+const EMOTION_AVATARS = [
+  { id: "joyeux", emoji: "😊", label: "Joyeux·se", color: "#FFD700", bg: "#FEF9E4",
+    svg: `<circle cx="50" cy="50" r="45" fill="#FFD700" stroke="#F0A500" stroke-width="2"/>
+          <circle cx="35" cy="40" r="6" fill="#2A2540"/>
+          <circle cx="65" cy="40" r="6" fill="#2A2540"/>
+          <circle cx="37" cy="38" r="2" fill="white"/>
+          <circle cx="67" cy="38" r="2" fill="white"/>
+          <path d="M 30 60 Q 50 78 70 60" stroke="#2A2540" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <ellipse cx="25" cy="58" rx="8" ry="5" fill="#FFB3C6" opacity="0.5"/>
+          <ellipse cx="75" cy="58" rx="8" ry="5" fill="#FFB3C6" opacity="0.5"/>` },
+  { id: "triste", emoji: "😔", label: "Triste", color: "#7EB8D4", bg: "#E5F0FF",
+    svg: `<circle cx="50" cy="50" r="45" fill="#7EB8D4" stroke="#5A9AC0" stroke-width="2"/>
+          <circle cx="35" cy="42" r="6" fill="#2A2540"/>
+          <circle cx="65" cy="42" r="6" fill="#2A2540"/>
+          <circle cx="37" cy="40" r="2" fill="white"/>
+          <circle cx="67" cy="40" r="2" fill="white"/>
+          <path d="M 30 65 Q 50 55 70 65" stroke="#2A2540" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <path d="M 28 35 Q 35 30 40 38" stroke="#2A2540" stroke-width="2" fill="none"/>
+          <path d="M 72 35 Q 65 30 60 38" stroke="#2A2540" stroke-width="2" fill="none"/>
+          <circle cx="38" cy="55" r="3" fill="#A8D4F0" opacity="0.8"/>
+          <circle cx="62" cy="57" r="3" fill="#A8D4F0" opacity="0.8"/>` },
+  { id: "anxieux", emoji: "😰", label: "Anxieux·se", color: "#A0C4A0", bg: "#E5FFE5",
+    svg: `<circle cx="50" cy="50" r="45" fill="#A0C4A0" stroke="#7BA87B" stroke-width="2"/>
+          <ellipse cx="35" cy="42" rx="7" ry="6" fill="#2A2540"/>
+          <ellipse cx="65" cy="42" rx="7" ry="6" fill="#2A2540"/>
+          <circle cx="37" cy="40" r="2" fill="white"/>
+          <circle cx="67" cy="40" r="2" fill="white"/>
+          <path d="M 35 63 Q 43 58 50 63 Q 57 68 65 63" stroke="#2A2540" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <path d="M 28 32 Q 36 27 40 35" stroke="#2A2540" stroke-width="2" fill="none"/>
+          <path d="M 72 32 Q 64 27 60 35" stroke="#2A2540" stroke-width="2" fill="none"/>
+          <circle cx="72" cy="38" r="5" fill="#A8D4F0" opacity="0.7"/>` },
+  { id: "colere", emoji: "😡", label: "En colère", color: "#E07070", bg: "#FEE2E2",
+    svg: `<circle cx="50" cy="50" r="45" fill="#E07070" stroke="#C05050" stroke-width="2"/>
+          <circle cx="35" cy="45" r="6" fill="#2A2540"/>
+          <circle cx="65" cy="45" r="6" fill="#2A2540"/>
+          <circle cx="37" cy="43" r="2" fill="white"/>
+          <circle cx="67" cy="43" r="2" fill="white"/>
+          <path d="M 30 63 Q 50 55 70 63" stroke="#2A2540" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <path d="M 25 30 L 45 38" stroke="#2A2540" stroke-width="3" stroke-linecap="round"/>
+          <path d="M 75 30 L 55 38" stroke="#2A2540" stroke-width="3" stroke-linecap="round"/>
+          <path d="M 30 22 L 42 34" stroke="#FF6B35" stroke-width="2" stroke-linecap="round"/>
+          <path d="M 70 22 L 58 34" stroke="#FF6B35" stroke-width="2" stroke-linecap="round"/>` },
+  { id: "calme", emoji: "😌", label: "Calme", color: "#B0A0D0", bg: "#EDE8F8",
+    svg: `<circle cx="50" cy="50" r="45" fill="#B0A0D0" stroke="#9080C0" stroke-width="2"/>
+          <path d="M 28 42 Q 35 38 42 42" stroke="#2A2540" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <path d="M 58 42 Q 65 38 72 42" stroke="#2A2540" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <path d="M 33 60 Q 50 70 67 60" stroke="#2A2540" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <ellipse cx="25" cy="56" rx="7" ry="5" fill="#FFB3C6" opacity="0.4"/>
+          <ellipse cx="75" cy="56" rx="7" ry="5" fill="#FFB3C6" opacity="0.4"/>` },
+  { id: "fatigue", emoji: "😴", label: "Fatigué·e", color: "#9090B0", bg: "#E8E8F8",
+    svg: `<circle cx="50" cy="50" r="45" fill="#9090B0" stroke="#7070A0" stroke-width="2"/>
+          <path d="M 28 44 Q 35 40 42 44" stroke="#2A2540" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <path d="M 58 44 Q 65 40 72 44" stroke="#2A2540" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <path d="M 35 62 Q 50 68 65 62" stroke="#2A2540" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <text x="68" y="30" font-size="18" fill="#FFD700">z</text>
+          <text x="75" y="20" font-size="14" fill="#FFD700">z</text>
+          <text x="80" y="12" font-size="10" fill="#FFD700">z</text>` },
+  { id: "heureux", emoji: "🥰", label: "Aimé·e", color: "#E891B0", bg: "#FDEAF2",
+    svg: `<circle cx="50" cy="50" r="45" fill="#E891B0" stroke="#D06090" stroke-width="2"/>
+          <circle cx="35" cy="40" r="6" fill="#2A2540"/>
+          <circle cx="65" cy="40" r="6" fill="#2A2540"/>
+          <circle cx="37" cy="38" r="2" fill="white"/>
+          <circle cx="67" cy="38" r="2" fill="white"/>
+          <path d="M 28 58 Q 50 75 72 58" stroke="#2A2540" stroke-width="3" fill="#FFB3C6" stroke-linecap="round"/>
+          <path d="M 20 25 Q 25 18 30 25 Q 25 32 20 25 Z" fill="#E05A5A"/>
+          <path d="M 32 18 Q 37 11 42 18 Q 37 25 32 18 Z" fill="#E05A5A"/>
+          <path d="M 58 18 Q 63 11 68 18 Q 63 25 58 18 Z" fill="#E05A5A"/>
+          <path d="M 70 25 Q 75 18 80 25 Q 75 32 70 25 Z" fill="#E05A5A"/>` },
+  { id: "stresse", emoji: "😤", label: "Stressé·e", color: "#F4A261", bg: "#FEF0E4",
+    svg: `<circle cx="50" cy="50" r="45" fill="#F4A261" stroke="#D4824A" stroke-width="2"/>
+          <circle cx="35" cy="43" r="6" fill="#2A2540"/>
+          <circle cx="65" cy="43" r="6" fill="#2A2540"/>
+          <circle cx="37" cy="41" r="2" fill="white"/>
+          <circle cx="67" cy="41" r="2" fill="white"/>
+          <path d="M 33 62 Q 50 55 67 62" stroke="#2A2540" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <path d="M 28 30 Q 36 25 42 32" stroke="#2A2540" stroke-width="2" fill="none"/>
+          <path d="M 72 30 Q 64 25 58 32" stroke="#2A2540" stroke-width="2" fill="none"/>
+          <path d="M 44 10 Q 50 5 56 10" stroke="#E05A5A" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <path d="M 47 5 Q 50 2 53 5" stroke="#E05A5A" stroke-width="1.5" fill="none" stroke-linecap="round"/>` },
+  { id: "confus", emoji: "😕", label: "Confus·e", color: "#C4AEE8", bg: "#EDE8F8",
+    svg: `<circle cx="50" cy="50" r="45" fill="#C4AEE8" stroke="#A090D0" stroke-width="2"/>
+          <circle cx="35" cy="42" r="6" fill="#2A2540"/>
+          <circle cx="65" cy="42" r="6" fill="#2A2540"/>
+          <circle cx="37" cy="40" r="2" fill="white"/>
+          <circle cx="67" cy="40" r="2" fill="white"/>
+          <path d="M 36 63 Q 43 60 50 65 Q 57 60 64 63" stroke="#2A2540" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <path d="M 28 33 Q 36 28 43 35" stroke="#2A2540" stroke-width="2" fill="none"/>
+          <text x="68" y="35" font-size="16" fill="#2A2540">?</text>` },
+  { id: "reconnaissant", emoji: "🤗", label: "Reconnaissant·e", color: "#7BBF9A", bg: "#E4F5EC",
+    svg: `<circle cx="50" cy="50" r="45" fill="#7BBF9A" stroke="#5AA882" stroke-width="2"/>
+          <circle cx="35" cy="40" r="6" fill="#2A2540"/>
+          <circle cx="65" cy="40" r="6" fill="#2A2540"/>
+          <circle cx="37" cy="38" r="2" fill="white"/>
+          <circle cx="67" cy="38" r="2" fill="white"/>
+          <path d="M 28 60 Q 50 76 72 60" stroke="#2A2540" stroke-width="3" fill="#A8E4C0" stroke-linecap="round"/>
+          <path d="M 15 50 Q 20 42 28 48" stroke="#5AA882" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <path d="M 85 50 Q 80 42 72 48" stroke="#5AA882" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <ellipse cx="25" cy="56" rx="8" ry="5" fill="#FFB3C6" opacity="0.5"/>
+          <ellipse cx="75" cy="56" rx="8" ry="5" fill="#FFB3C6" opacity="0.5"/>` },
+];
+
+function AvatarEmotion({ avatar, size = 80 }) {
+  const av = EMOTION_AVATARS.find(a => a.id === avatar) || EMOTION_AVATARS[0];
+  return (
+    <div style={{ width: size, height: size, borderRadius: "50%", overflow: "hidden",
+      border: `3px solid ${av.color}`, boxShadow: `0 4px 16px ${av.color}66` }}>
+      <svg width={size} height={size} viewBox="0 0 100 100"
+        dangerouslySetInnerHTML={{ __html: av.svg }} />
+    </div>
+  );
+}
+
+function AvatarSelector({ onClose, currentAvatar, onSelect }) {
+  return (
+    <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)", zIndex: 100,
+      display: "flex", alignItems: "flex-end", justifyContent: "center" }}>
+      <div style={{ background: C.bgCard, borderRadius: "24px 24px 0 0", padding: 24,
+        width: "100%", maxWidth: 430, maxHeight: "70vh", overflowY: "auto" }}>
+        <div style={{ fontWeight: 800, color: C.text, fontSize: 18, marginBottom: 16 }}>
+          Comment tu te sens ? 💜
+        </div>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 12 }}>
+          {EMOTION_AVATARS.map(av => (
+            <button key={av.id} onClick={() => { onSelect(av.id); onClose(); }}
+              style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 6,
+                background: currentAvatar === av.id ? av.bg : "transparent",
+                border: currentAvatar === av.id ? `2px solid ${av.color}` : "2px solid transparent",
+                borderRadius: 16, padding: 8, cursor: "pointer" }}>
+              <AvatarEmotion avatar={av.id} size={48} />
+              <span style={{ fontSize: 9, color: C.muted, textAlign: "center", lineHeight: 1.2 }}>
+                {av.label}
+              </span>
+            </button>
+          ))}
+        </div>
+        <button onClick={onClose} style={{ width: "100%", padding: 12, marginTop: 16,
+          borderRadius: 50, background: C.border, border: "none", fontWeight: 700,
+          color: C.muted, cursor: "pointer" }}>Fermer</button>
+      </div>
+    </div>
+  );
+}
+
+function HomeScreen({ setScreen, quests, coins, user, currentAvatar, setCurrentAvatar }) {
+  const [showAvatarSelector, setShowAvatarSelector] = useState(false);
   const done = quests.filter(q => q.done).length;
   return (
     <div style={{ padding: "20px 16px" }}>
@@ -272,10 +418,8 @@ function HomeScreen({ setScreen, quests, coins, user }) {
           <div style={{ fontSize: 22, fontWeight: 800, color: C.text }}>Bonjour {user?.prenom || ""} 🌸</div>
           <div style={{ fontSize: 13, color: C.muted }}>Comment tu vas aujourd'hui ?</div>
         </div>
-        <button onClick={() => setScreen(S.PROFILE)} style={{ background: "none", border: "none", cursor: "pointer" }}>
-          <div style={{ width: 46, height: 46, borderRadius: "50%", background: C.purple, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22, boxShadow: `0 2px 8px ${C.purple}66` }}>
-            🌸
-          </div>
+        <button onClick={() => setShowAvatarSelector(true)} style={{ background: "none", border: "none", cursor: "pointer" }}>
+          <AvatarEmotion avatar={currentAvatar} size={46} />
         </button>
       </div>
 
@@ -339,6 +483,14 @@ function HomeScreen({ setScreen, quests, coins, user }) {
           ✨ <strong>Se lever le matin, c'est déjà beaucoup.</strong> Cette appli ne récompense pas la performance. Elle valorise ta présence, tes petits pas, et ta persévérance.
         </p>
       </Card>
+
+      {showAvatarSelector && (
+        <AvatarSelector
+          currentAvatar={currentAvatar}
+          onSelect={setCurrentAvatar}
+          onClose={() => setShowAvatarSelector(false)}
+        />
+      )}
     </div>
   );
 }
@@ -1264,28 +1416,76 @@ function SuiviHumeurScreen({ onBack, user }) {
 
 // ─── Carte des urgences ───────────────────────────────────────
 const URGENCES_DATA = [
-  { nom: "3114 — Numéro national prévention suicide", type: "Urgence nationale", tel: "3114", ouvert: "24h/24 · Gratuit · Confidentiel", color: "#E05A5A", bg: "#FEE2E2", emoji: "🆘" },
-  { nom: "SAMU", type: "Urgence médicale", tel: "15", ouvert: "24h/24", color: "#E05A5A", bg: "#FEE2E2", emoji: "🚑" },
-  { nom: "CHU Pitié-Salpêtrière — Urgences Psy", type: "Hôpital", tel: "01 42 16 00 00", ouvert: "24h/24", color: C.purple, bg: C.purplePale, emoji: "🏥", ville: "Paris 13e" },
-  { nom: "CMP Paris 11e", type: "Centre médico-psychologique", tel: "01 43 67 12 34", ouvert: "Lun-Ven 9h-17h", color: C.green, bg: C.greenPale, emoji: "🏡", ville: "Paris 11e" },
-  { nom: "Clinique des Lilas", type: "Clinique psychiatrique", tel: "01 49 72 72 00", ouvert: "24h/24", color: C.orange, bg: C.orangePale, emoji: "🏥", ville: "Les Lilas (93)" },
-  { nom: "SOS Amitié", type: "Écoute téléphonique", tel: "09 72 39 40 50", ouvert: "24h/24", color: C.pink, bg: C.pinkPale, emoji: "💬" },
-  { nom: "Fil Santé Jeunes", type: "Écoute 12-25 ans", tel: "0800 235 236", ouvert: "8h-minuit · Gratuit", color: C.green, bg: C.greenPale, emoji: "🌱" },
+  // Numéros nationaux
+  { nom: "3114 — Prévention suicide", type: "National", tel: "3114", ouvert: "24h/24 · Gratuit · Confidentiel", color: "#E05A5A", bg: "#FEE2E2", emoji: "🆘", region: "France entière" },
+  { nom: "SAMU", type: "National", tel: "15", ouvert: "24h/24", color: "#E05A5A", bg: "#FEE2E2", emoji: "🚑", region: "France entière" },
+  { nom: "SOS Amitié", type: "Écoute", tel: "09 72 39 40 50", ouvert: "24h/24", color: C.pink, bg: C.pinkPale, emoji: "💬", region: "France entière" },
+  { nom: "Fil Santé Jeunes", type: "Écoute", tel: "0800 235 236", ouvert: "8h-minuit · Gratuit", color: C.green, bg: C.greenPale, emoji: "🌱", region: "France entière" },
+  { nom: "Numéro National Handicap", type: "Écoute", tel: "0800 360 360", ouvert: "Lun-Ven 9h-17h · Gratuit", color: C.orange, bg: C.orangePale, emoji: "♿", region: "France entière" },
+  { nom: "Violences femmes info", type: "Écoute", tel: "3919", ouvert: "24h/24 · Gratuit", color: C.pink, bg: C.pinkPale, emoji: "🤝", region: "France entière" },
+  { nom: "Suicide Écoute", type: "Écoute", tel: "01 45 39 40 00", ouvert: "24h/24", color: "#E05A5A", bg: "#FEE2E2", emoji: "💙", region: "France entière" },
+  // Île-de-France
+  { nom: "CPOA — Urgences psy Île-de-France", type: "Urgence", tel: "01 45 65 81 09", ouvert: "24h/24", color: C.purple, bg: C.purplePale, emoji: "🏥", region: "Île-de-France", ville: "Paris 14e" },
+  { nom: "Hôpital Lariboisière", type: "Hôpital", tel: "01 49 95 64 43", ouvert: "24h/24", color: C.purple, bg: C.purplePale, emoji: "🏥", region: "Île-de-France", ville: "Paris 10e" },
+  { nom: "Hôpital Saint-Antoine", type: "Hôpital", tel: "01 49 28 27 08", ouvert: "24h/24", color: C.purple, bg: C.purplePale, emoji: "🏥", region: "Île-de-France", ville: "Paris 12e" },
+  { nom: "Pitié-Salpêtrière", type: "Hôpital", tel: "01 42 17 72 47", ouvert: "24h/24", color: C.purple, bg: C.purplePale, emoji: "🏥", region: "Île-de-France", ville: "Paris 13e" },
+  { nom: "Hôpital Georges Pompidou", type: "Hôpital", tel: "01 56 09 29 36", ouvert: "24h/24", color: C.purple, bg: C.purplePale, emoji: "🏥", region: "Île-de-France", ville: "Paris 15e" },
+  { nom: "Clinique des Lilas", type: "Clinique", tel: "01 49 72 72 00", ouvert: "24h/24", color: C.orange, bg: C.orangePale, emoji: "🏥", region: "Île-de-France", ville: "Les Lilas 93" },
+  // Nord
+  { nom: "CHRU Lille — Centre d'Accueil de Crise", type: "Urgence", tel: "03 20 44 45 19", ouvert: "24h/24", color: C.purple, bg: C.purplePale, emoji: "🏥", region: "Nord", ville: "Lille" },
+  { nom: "Centre Psy d'Admission Lille", type: "Urgence", tel: "03 20 78 22 22", ouvert: "24h/24", color: C.purple, bg: C.purplePale, emoji: "🏥", region: "Nord", ville: "Lille" },
+  // Rhône-Alpes
+  { nom: "CHU Lyon — Urgences Psy", type: "Urgence", tel: "04 72 11 69 11", ouvert: "24h/24", color: C.purple, bg: C.purplePale, emoji: "🏥", region: "Auvergne-Rhône-Alpes", ville: "Lyon" },
+  { nom: "Centre Antipoison Lyon", type: "Urgence", tel: "04 75 11 69 11", ouvert: "24h/24", color: "#E05A5A", bg: "#FEE2E2", emoji: "☎️", region: "Auvergne-Rhône-Alpes", ville: "Lyon" },
+  // PACA
+  { nom: "CHU Marseille — La Timone", type: "Urgence", tel: "04 91 38 60 00", ouvert: "24h/24", color: C.purple, bg: C.purplePale, emoji: "🏥", region: "PACA", ville: "Marseille" },
+  { nom: "Centre Antipoison Marseille", type: "Urgence", tel: "04 91 75 25 25", ouvert: "24h/24", color: "#E05A5A", bg: "#FEE2E2", emoji: "☎️", region: "PACA", ville: "Marseille" },
+  // Occitanie
+  { nom: "CHU Toulouse — Urgences Psy", type: "Urgence", tel: "05 61 77 22 33", ouvert: "24h/24", color: C.purple, bg: C.purplePale, emoji: "🏥", region: "Occitanie", ville: "Toulouse" },
+  { nom: "Centre Antipoison Toulouse", type: "Urgence", tel: "05 61 77 74 47", ouvert: "24h/24", color: "#E05A5A", bg: "#FEE2E2", emoji: "☎️", region: "Occitanie", ville: "Toulouse" },
+  // Nouvelle-Aquitaine
+  { nom: "CHU Bordeaux — Urgences Psy", type: "Urgence", tel: "05 56 79 56 79", ouvert: "24h/24", color: C.purple, bg: C.purplePale, emoji: "🏥", region: "Nouvelle-Aquitaine", ville: "Bordeaux" },
+  { nom: "Centre Antipoison Bordeaux", type: "Urgence", tel: "05 56 96 40 80", ouvert: "24h/24", color: "#E05A5A", bg: "#FEE2E2", emoji: "☎️", region: "Nouvelle-Aquitaine", ville: "Bordeaux" },
+  // Grand Est
+  { nom: "CHU Strasbourg — Urgences Psy", type: "Urgence", tel: "03 88 11 67 68", ouvert: "24h/24", color: C.purple, bg: C.purplePale, emoji: "🏥", region: "Grand Est", ville: "Strasbourg" },
+  { nom: "Centre Antipoison Strasbourg", type: "Urgence", tel: "03 88 37 37 37", ouvert: "24h/24", color: "#E05A5A", bg: "#FEE2E2", emoji: "☎️", region: "Grand Est", ville: "Strasbourg" },
+  { nom: "CHU Nancy — Urgences Psy", type: "Urgence", tel: "03 83 22 50 50", ouvert: "24h/24", color: C.purple, bg: C.purplePale, emoji: "🏥", region: "Grand Est", ville: "Nancy" },
+  // Bretagne
+  { nom: "CHU Rennes — Urgences Psy", type: "Urgence", tel: "02 99 26 71 28", ouvert: "24h/24", color: C.purple, bg: C.purplePale, emoji: "🏥", region: "Bretagne", ville: "Rennes" },
+  // Pays de la Loire
+  { nom: "CHU Nantes — Urgences Psy", type: "Urgence", tel: "02 40 08 33 33", ouvert: "24h/24", color: C.purple, bg: C.purplePale, emoji: "🏥", region: "Pays de la Loire", ville: "Nantes" },
+  // Centre-Val de Loire
+  { nom: "CHU Tours — Centre d'Accueil de Crise", type: "Urgence", tel: "02 47 47 98 08", ouvert: "24h/24", color: C.purple, bg: C.purplePale, emoji: "🏥", region: "Centre-Val de Loire", ville: "Tours" },
+  // Normandie
+  { nom: "CHU Rouen — Urgences Psy", type: "Urgence", tel: "02 32 88 89 90", ouvert: "24h/24", color: C.purple, bg: C.purplePale, emoji: "🏥", region: "Normandie", ville: "Rouen" },
+  // Bourgogne
+  { nom: "CHU Dijon — Urgences Psy", type: "Urgence", tel: "03 80 29 30 31", ouvert: "24h/24", color: C.purple, bg: C.purplePale, emoji: "🏥", region: "Bourgogne-Franche-Comté", ville: "Dijon" },
+  // DOM-TOM
+  { nom: "CHU Martinique — Urgences Psy", type: "Urgence", tel: "05 96 55 20 00", ouvert: "24h/24", color: C.orange, bg: C.orangePale, emoji: "🏥", region: "Martinique", ville: "Fort-de-France" },
+  { nom: "CHU Guadeloupe — Urgences Psy", type: "Urgence", tel: "05 90 89 10 10", ouvert: "24h/24", color: C.orange, bg: C.orangePale, emoji: "🏥", region: "Guadeloupe", ville: "Pointe-à-Pitre" },
+  { nom: "CHU La Réunion — Urgences Psy", type: "Urgence", tel: "02 62 90 50 50", ouvert: "24h/24", color: C.orange, bg: C.orangePale, emoji: "🏥", region: "La Réunion", ville: "Saint-Denis" },
 ];
+
+const REGIONS = ["Toutes", "France entière", "Île-de-France", "Nord", "Auvergne-Rhône-Alpes", "PACA", "Occitanie", "Nouvelle-Aquitaine", "Grand Est", "Bretagne", "Pays de la Loire", "Centre-Val de Loire", "Normandie", "Bourgogne-Franche-Comté", "Martinique", "Guadeloupe", "La Réunion"];
+
 
 function UrgencesScreen({ onBack }) {
   const [search, setSearch] = useState("");
   const [filtre, setFiltre] = useState("tous");
+  const [region, setRegion] = useState("Toutes");
 
-  const filtres = ["tous", "urgence", "hôpital", "écoute"];
+  const filtres = ["tous", "national", "urgence", "hôpital", "écoute"];
 
   const filtered = URGENCES_DATA.filter(u => {
-    const matchSearch = u.nom.toLowerCase().includes(search.toLowerCase());
+    const matchSearch = u.nom.toLowerCase().includes(search.toLowerCase()) ||
+      (u.ville && u.ville.toLowerCase().includes(search.toLowerCase()));
     const matchFiltre = filtre === "tous" ||
-      (filtre === "urgence" && u.type.toLowerCase().includes("urgence")) ||
-      (filtre === "hôpital" && (u.type.toLowerCase().includes("hôpital") || u.type.toLowerCase().includes("clinique"))) ||
-      (filtre === "écoute" && u.type.toLowerCase().includes("écoute"));
-    return matchSearch && matchFiltre;
+      (filtre === "national" && u.region === "France entière") ||
+      (filtre === "urgence" && (u.type === "Urgence" || u.type === "National")) ||
+      (filtre === "hôpital" && (u.type === "Hôpital" || u.type === "Clinique")) ||
+      (filtre === "écoute" && u.type === "Écoute");
+    const matchRegion = region === "Toutes" || u.region === region;
+    return matchSearch && matchFiltre && matchRegion;
   });
 
   return (
@@ -1315,8 +1515,8 @@ function UrgencesScreen({ onBack }) {
         style={{ width: "100%", padding: "10px 14px", borderRadius: 12, border: `1px solid ${C.border}`,
           outline: "none", fontSize: 14, background: C.bg, marginBottom: 12, boxSizing: "border-box" }} />
 
-      {/* Filtres */}
-      <div style={{ display: "flex", gap: 8, marginBottom: 16, flexWrap: "wrap" }}>
+      {/* Filtres type */}
+      <div style={{ display: "flex", gap: 8, marginBottom: 10, flexWrap: "wrap" }}>
         {filtres.map(f => (
           <button key={f} onClick={() => setFiltre(f)} style={{
             padding: "6px 14px", borderRadius: 20, border: "none", fontWeight: 700,
@@ -1326,6 +1526,13 @@ function UrgencesScreen({ onBack }) {
           }}>{f}</button>
         ))}
       </div>
+      {/* Filtre région */}
+      <select value={region} onChange={e => setRegion(e.target.value)}
+        style={{ width: "100%", padding: "10px 14px", borderRadius: 12, border: `1px solid ${C.border}`,
+          outline: "none", fontSize: 14, background: C.bg, marginBottom: 16,
+          color: C.text, cursor: "pointer" }}>
+        {REGIONS.map(r => <option key={r} value={r}>{r}</option>)}
+      </select>
 
       <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
         {filtered.map((u, i) => (
@@ -1336,6 +1543,7 @@ function UrgencesScreen({ onBack }) {
                 <div style={{ fontWeight: 700, color: C.text, fontSize: 14 }}>{u.nom}</div>
                 <div style={{ fontSize: 12, color: u.color, fontWeight: 600, marginTop: 2 }}>{u.type}</div>
                 {u.ville && <div style={{ fontSize: 12, color: C.muted }}>📍 {u.ville}</div>}
+              {u.region && u.region !== "France entière" && <div style={{ fontSize: 11, color: C.purple, fontWeight: 600 }}>🗺 {u.region}</div>}
                 <div style={{ fontSize: 12, color: C.muted, marginTop: 2 }}>⏰ {u.ouvert}</div>
               </div>
               <a href={"tel:" + u.tel} style={{ textDecoration: "none", flexShrink: 0 }}>
@@ -2239,6 +2447,8 @@ function Heidi({ user, onLogout }) {
   const [quests, setQuests] = useState(QUESTS);
   const [mode, setMode] = useState(user.mode || "Mode libre");
 
+  const [currentAvatar, setCurrentAvatar] = useState("calme");
+
   const addCoins = async (n) => {
     const newTotal = coins + n;
     setCoins(newTotal);
@@ -2266,7 +2476,7 @@ function Heidi({ user, onLogout }) {
   return (
     <div style={{ fontFamily: "'Inter', system-ui, sans-serif", background: C.bg, minHeight: "100vh", maxWidth: 430, margin: "0 auto", display: "flex", flexDirection: "column" }}>
       <div style={{ flex: 1, overflowY: "auto", paddingBottom: 72 }}>
-        {screen === S.HOME && <HomeScreen setScreen={setScreen} quests={quests} coins={coins} user={user} />}
+        {screen === S.HOME && <HomeScreen setScreen={setScreen} quests={quests} coins={coins} user={user} currentAvatar={currentAvatar} setCurrentAvatar={setCurrentAvatar} />}
         {screen === S.QUESTS && <QuestsScreen onBack={() => setScreen(S.HOME)} quests={quests} setQuests={setQuests} addCoins={addCoins} mode={mode} />}
         {screen === S.GAME && <GameScreen onBack={() => setScreen(S.HOME)} setScreen={setScreen} />}
         {screen === S.BREATHE    && <BreatheScreen    onBack={() => setScreen(S.GAME)} />}
