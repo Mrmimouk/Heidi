@@ -250,8 +250,9 @@ function Btn({ children, onClick, color = C.purple, style = {}, small = false })
 
 function BackBtn({ onBack }) {
   return (
-    <button onClick={onBack} style={{ background: "none", border: "none", color: C.purple, fontWeight: 700, fontSize: 15, cursor: "pointer", padding: "0 0 16px", display: "flex", alignItems: "center", gap: 6 }}>
-      ← Retour
+    <button onClick={onBack} style={{ background: "none", border: "none", color: C.purple, fontWeight: 700, fontSize: 14, cursor: "pointer", padding: "0 0 16px", display: "flex", alignItems: "center", gap: 6 }}>
+      <Icon name="back" size={18} color={C.purple} />
+      Retour
     </button>
   );
 }
@@ -259,6 +260,190 @@ function BackBtn({ onBack }) {
 // ─── Screens ──────────────────────────────────────────────────
 
 
+
+
+
+// ─── PsychoCoin ───────────────────────────────────────────────
+function PsychoCoin({ size = 28 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 40 40">
+      <defs>
+        <radialGradient id="coinGold" cx="40%" cy="35%" r="60%">
+          <stop offset="0%" stopColor="#FFF0A0" />
+          <stop offset="30%" stopColor="#FFD700" />
+          <stop offset="65%" stopColor="#C8A000" />
+          <stop offset="100%" stopColor="#8B6000" />
+        </radialGradient>
+        <radialGradient id="coinInner" cx="40%" cy="35%" r="60%">
+          <stop offset="0%" stopColor="#FFF5B0" />
+          <stop offset="40%" stopColor="#F5C400" />
+          <stop offset="100%" stopColor="#A07800" />
+        </radialGradient>
+      </defs>
+      {/* Shadow */}
+      <ellipse cx="21" cy="21" rx="17" ry="17" fill="rgba(0,0,0,0.18)" />
+      {/* Outer coin body */}
+      <circle cx="20" cy="20" r="18" fill="url(#coinGold)" />
+      {/* Rim detail */}
+      <circle cx="20" cy="20" r="18" fill="none" stroke="#8B6000" strokeWidth="1" />
+      <circle cx="20" cy="20" r="16" fill="none" stroke="#FFE44D" strokeWidth="0.6" />
+      {/* Inner face */}
+      <circle cx="20" cy="20" r="14" fill="url(#coinInner)" />
+      {/* Engraved inner ring */}
+      <circle cx="20" cy="20" r="13.5" fill="none" stroke="#A07800" strokeWidth="0.8" />
+      {/* PC text - engraved look */}
+      <text x="21" y="25.5" textAnchor="middle" fontSize="12" fontWeight="900"
+        fontFamily="Georgia, serif" fill="#7A5500" letterSpacing="0.5">PC</text>
+      <text x="20.5" y="25" textAnchor="middle" fontSize="12" fontWeight="900"
+        fontFamily="Georgia, serif" fill="#FFF0A0" letterSpacing="0.5">PC</text>
+      {/* Stars/dots decoration */}
+      <circle cx="20" cy="10" r="1" fill="#8B6000" opacity="0.6"/>
+      <circle cx="20" cy="30" r="1" fill="#8B6000" opacity="0.6"/>
+      <circle cx="10" cy="20" r="1" fill="#8B6000" opacity="0.6"/>
+      <circle cx="30" cy="20" r="1" fill="#8B6000" opacity="0.6"/>
+      {/* Shine highlight */}
+      <ellipse cx="13" cy="12" rx="5" ry="3" fill="rgba(255,255,255,0.45)" transform="rotate(-35 13 12)" />
+      <ellipse cx="27" cy="28" rx="3" ry="1.5" fill="rgba(0,0,0,0.1)" transform="rotate(-35 27 28)" />
+    </svg>
+  );
+}
+
+// ─── Icônes SVG professionnelles ─────────────────────────────
+function Icon({ name, size = 28, color = "currentColor" }) {
+  const icons = {
+    activities: (
+      <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 2a10 10 0 100 20A10 10 0 0012 2z"/>
+        <path d="M12 6v6l4 3"/>
+      </svg>
+    ),
+    quests: (
+      <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+      </svg>
+    ),
+    chat: (
+      <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+      </svg>
+    ),
+    resources: (
+      <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="12" cy="12" r="10"/>
+        <line x1="12" y1="8" x2="12" y2="12"/>
+        <line x1="12" y1="16" x2="12.01" y2="16"/>
+      </svg>
+    ),
+    community: (
+      <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
+        <circle cx="9" cy="7" r="4"/>
+        <path d="M23 21v-2a4 4 0 00-3-3.87"/>
+        <path d="M16 3.13a4 4 0 010 7.75"/>
+      </svg>
+    ),
+    mood: (
+      <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+      </svg>
+    ),
+    emergency: (
+      <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.68A2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z"/>
+      </svg>
+    ),
+    reminders: (
+      <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+        <path d="M13.73 21a2 2 0 01-3.46 0"/>
+      </svg>
+    ),
+    live: (
+      <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <polygon points="23 7 16 12 23 17 23 7"/>
+        <rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
+      </svg>
+    ),
+    home: (
+      <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
+        <polyline points="9 22 9 12 15 12 15 22"/>
+      </svg>
+    ),
+    breathe: (
+      <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 22a8 8 0 01-8-8c0-3.5 2-6.5 5-8"/>
+        <path d="M12 2a8 8 0 018 8c0 3.5-2 6.5-5 8"/>
+        <circle cx="12" cy="12" r="3"/>
+      </svg>
+    ),
+    scan: (
+      <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/>
+        <path d="M12 6v6l4 2"/>
+      </svg>
+    ),
+    journal: (
+      <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+        <polyline points="14 2 14 8 20 8"/>
+        <line x1="16" y1="13" x2="8" y2="13"/>
+        <line x1="16" y1="17" x2="8" y2="17"/>
+        <polyline points="10 9 9 9 8 9"/>
+      </svg>
+    ),
+    gratitude: (
+      <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/>
+      </svg>
+    ),
+    cognitive: (
+      <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/>
+        <circle cx="12" cy="12" r="10"/>
+        <line x1="12" y1="17" x2="12.01" y2="17"/>
+      </svg>
+    ),
+    profile: (
+      <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+        <circle cx="12" cy="7" r="4"/>
+      </svg>
+    ),
+    sos: (
+      <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="12" cy="12" r="10"/>
+        <line x1="12" y1="8" x2="12" y2="12"/>
+        <line x1="12" y1="16" x2="12.01" y2="16"/>
+      </svg>
+    ),
+    coins: (
+      <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="12" cy="12" r="10"/>
+        <path d="M12 8v8M9 10h4.5a1.5 1.5 0 010 3H10a1.5 1.5 0 000 3H15"/>
+      </svg>
+    ),
+    arrow: (
+      <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <line x1="5" y1="12" x2="19" y2="12"/>
+        <polyline points="12 5 19 12 12 19"/>
+      </svg>
+    ),
+    send: (
+      <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <line x1="22" y1="2" x2="11" y2="13"/>
+        <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+      </svg>
+    ),
+    back: (
+      <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <line x1="19" y1="12" x2="5" y2="12"/>
+        <polyline points="12 19 5 12 12 5"/>
+      </svg>
+    ),
+  };
+  return icons[name] || null;
+}
 
 // ─── Avatars émotions ─────────────────────────────────────────
 const EMOTION_AVATARS = [
@@ -431,7 +616,10 @@ function HomeScreen({ setScreen, quests, coins, user, currentAvatar, setCurrentA
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <div>
             <div style={{ color: "rgba(255,255,255,0.8)", fontSize: 12, fontWeight: 600 }}>MES PSYCHOCOINS</div>
-            <div style={{ color: "#fff", fontSize: 32, fontWeight: 800 }}>🪙 {coins}</div>
+            <div style={{ color: "#fff", fontSize: 28, fontWeight: 800, display: "flex", alignItems: "center", gap: 8 }}>
+              <PsychoCoin size={32} />
+              {coins}
+            </div>
           </div>
           <div style={{ textAlign: "right" }}>
             <div style={{ color: "rgba(255,255,255,0.8)", fontSize: 12 }}>Quêtes du jour</div>
@@ -443,7 +631,9 @@ function HomeScreen({ setScreen, quests, coins, user, currentAvatar, setCurrentA
       {/* Urgence */}
       <Card style={{ background: "#FFF0F0", border: `1px solid ${C.urgent}33`, marginBottom: 16 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-          <span style={{ fontSize: 28 }}>🆘</span>
+          <div style={{ width: 36, height: 36, borderRadius: "50%", background: "#E05A5A", display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <Icon name="sos" size={20} color="#fff" />
+          </div>
           <div style={{ flex: 1 }}>
             <div style={{ fontWeight: 700, color: C.urgent, fontSize: 15 }}>3114 — Prévention suicide</div>
             <div style={{ fontSize: 12, color: C.muted }}>Gratuit · 24h/24 · Confidentiel</div>
@@ -471,12 +661,14 @@ function HomeScreen({ setScreen, quests, coins, user, currentAvatar, setCurrentA
       {/* Lives */}
       <div style={{ marginBottom: 20 }}>
         <Card onClick={() => setScreen(S.LIVE)} style={{ display: "flex", alignItems: "center", gap: 14 }}>
-          <div style={{ fontSize: 32 }}>🎙️</div>
+          <div style={{ width: 46, height: 46, borderRadius: 14, background: C.purplePale, display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <Icon name="live" size={24} color={C.purple} />
+          </div>
           <div>
             <div style={{ fontWeight: 700, fontSize: 14, color: C.text }}>Lives avec des professionnels</div>
             <div style={{ fontSize: 12, color: C.muted }}>2 à 3 par semaine</div>
           </div>
-          <span style={{ marginLeft: "auto", color: C.purple }}>→</span>
+          <span style={{ marginLeft: "auto" }}><Icon name="arrow" size={16} color={C.purple} /></span>
         </Card>
       </div>
 
@@ -513,7 +705,7 @@ function QuestsScreen({ onBack, quests, setQuests, addCoins, mode }) {
             <div style={{ fontWeight: 700, color: C.text }}>{done}/{quests.length} quêtes</div>
             <div style={{ fontSize: 12, color: C.muted }}>Pas de punition si tu n'en fais pas</div>
           </div>
-          <div style={{ fontSize: 28 }}>🪙</div>
+          <PsychoCoin size={28} />
         </div>
         <div style={{ marginTop: 10, background: C.border, borderRadius: 10, height: 8 }}>
           <div style={{ width: `${(done / quests.length) * 100}%`, background: C.purple, height: 8, borderRadius: 10, transition: "width 0.4s" }} />
@@ -531,7 +723,7 @@ function QuestsScreen({ onBack, quests, setQuests, addCoins, mode }) {
             <span style={{ fontSize: 26 }}>{q.icon}</span>
             <div style={{ flex: 1 }}>
               <div style={{ fontWeight: 600, color: C.text, fontSize: 14, textDecoration: q.done ? "line-through" : "none" }}>{q.label}</div>
-              <div style={{ fontSize: 12, color: C.muted }}>+{q.coins} PsychoCoins</div>
+              <div style={{ fontSize: 12, color: C.muted }}>+{q.coins} PC</div>
             </div>
             <div style={{ width: 28, height: 28, borderRadius: "50%", background: q.done ? C.green : C.border, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 14 }}>
               {q.done ? "✓" : ""}
@@ -551,11 +743,11 @@ function QuestsScreen({ onBack, quests, setQuests, addCoins, mode }) {
 
 function GameScreen({ onBack, setScreen }) {
   const games = [
-    { icon: "🌬️", title: "Respiration guidée", desc: "Technique 4-4-6 pour calmer l'anxiété", s: S.BREATHE, color: C.purple, ready: true },
-    { icon: "🌿", title: "Scan corporel", desc: "Reconnecte-toi à ton corps", s: S.SCAN, color: C.green, ready: true },
-    { icon: "📓", title: "Journal des émotions", desc: "Pose tes pensées, observe tes humeurs", s: S.JOURNAL, color: C.orange, ready: true },
-    { icon: "🌟", title: "Gratitude du jour", desc: "3 choses positives d'aujourd'hui", s: S.GRATITUDE, color: C.yellow, ready: true },
-    { icon: "🧩", title: "Défis cognitifs doux", desc: "Stimule ton esprit en douceur", s: S.COGNITIF, color: C.pink, ready: true },
+    { icon: "breathe", title: "Respiration guidée", desc: "Technique 4-4-6 pour calmer l'anxiété", s: S.BREATHE, color: C.purple, ready: true },
+    { icon: "scan", title: "Scan corporel", desc: "Reconnecte-toi à ton corps", s: S.SCAN, color: C.green, ready: true },
+    { icon: "journal", title: "Journal des émotions", desc: "Pose tes pensées, observe tes humeurs", s: S.JOURNAL, color: C.orange, ready: true },
+    { icon: "gratitude", title: "Gratitude du jour", desc: "3 choses positives d'aujourd'hui", s: S.GRATITUDE, color: C.yellow, ready: true },
+    { icon: "cognitive", title: "Défis cognitifs doux", desc: "Stimule ton esprit en douceur", s: S.COGNITIF, color: C.pink, ready: true },
   ];
   return (
     <div style={{ padding: "20px 16px" }}>
@@ -565,14 +757,14 @@ function GameScreen({ onBack, setScreen }) {
       <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
         {games.map(g => (
           <Card key={g.title} onClick={() => g.ready && g.s && setScreen(g.s)} style={{ display: "flex", alignItems: "center", gap: 14, opacity: g.ready ? 1 : 0.65 }}>
-            <div style={{ width: 52, height: 52, borderRadius: 16, background: `${g.color}22`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 26, flexShrink: 0 }}>
-              {g.icon}
+            <div style={{ width: 52, height: 52, borderRadius: 16, background: `${g.color}22`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+              <Icon name={g.icon} size={26} color={g.color} />
             </div>
             <div style={{ flex: 1 }}>
               <div style={{ fontWeight: 700, color: C.text }}>{g.title}</div>
               <div style={{ fontSize: 13, color: C.muted }}>{g.desc}</div>
             </div>
-            {g.ready ? <span style={{ color: C.purple, fontSize: 18 }}>→</span> : <Tag label="Bientôt" color={C.muted} bg={C.border} />}
+            {g.ready ? <Icon name="arrow" size={18} color={C.purple} /> : <Tag label="Bientôt" color={C.muted} bg={C.border} />}
           </Card>
         ))}
       </div>
@@ -942,7 +1134,7 @@ function CognitifScreen({ onBack, addCoins }) {
             <div style={{ fontWeight: 700, color: C.text }}>{d.title}</div>
             <div style={{ fontSize: 13, color: C.muted }}>{d.desc}</div>
           </div>
-          <span style={{ color: C.purple }}>→</span>
+          <Icon name="arrow" size={16} color={C.purple} />
         </Card>
       ))}
     </div>
@@ -1833,9 +2025,14 @@ function ChatRoomScreen({ onBack, contact, user }) {
       </div>
       <div style={{ padding: "12px 16px", borderTop: `1px solid ${C.border}`, display: "flex", gap: 8, background: C.bgCard }}>
         <input value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => e.key === "Enter" && send()} placeholder="Écrivez votre message…" style={{ flex: 1, padding: "10px 16px", borderRadius: 24, border: `1px solid ${C.border}`, outline: "none", fontSize: 14, background: C.bg }} />
-        <Btn onClick={send} color={sending ? C.muted : C.purple} style={{ padding: "10px 18px", borderRadius: 24, margin: 0 }}>
-          {sending ? "..." : "↑"}
-        </Btn>
+        <button onClick={send} disabled={sending} style={{
+          width: 44, height: 44, borderRadius: "50%", border: "none",
+          background: sending ? C.muted : C.purple, cursor: sending ? "default" : "pointer",
+          display: "flex", alignItems: "center", justifyContent: "center",
+          boxShadow: sending ? "none" : `0 2px 8px ${C.purple}44`, flexShrink: 0
+        }}>
+          <Icon name="send" size={18} color="#fff" />
+        </button>
       </div>
     </div>
   );
@@ -1898,7 +2095,7 @@ function ResourcesScreen({ onBack, setScreen, setFiche }) {
                 <div style={{ fontWeight: 700, color: C.text }}>{f.title}</div>
                 <div style={{ fontSize: 13, color: C.muted }}>{f.symptomes.slice(0, 2).join(" · ")}</div>
               </div>
-              <span style={{ marginLeft: "auto", color: C.purple }}>→</span>
+              <span style={{ marginLeft: "auto" }}><Icon name="arrow" size={16} color={C.purple} /></span>
             </Card>
           ))}
         </div>
@@ -2014,7 +2211,7 @@ function ProfileScreen({ onBack, coins, quests, mode, setMode, user, onLogout })
       <div style={{ fontSize: 22, fontWeight: 800, color: C.text, marginBottom: 20 }}>Mon profil</div>
       <Card style={{ textAlign: "center", padding: 24, marginBottom: 16, background: `linear-gradient(135deg, ${C.purplePale}, ${C.greenPale})`, border: "none" }}>
         <div style={{ fontSize: 64 }}>🌸</div>
-        <div style={{ fontWeight: 800, color: C.text, marginTop: 8, fontSize: 18 }}>🪙 {coins} PsychoCoins</div>
+        <div style={{ fontWeight: 800, color: C.text, marginTop: 8, fontSize: 18 }}>{coins} PsychoCoins</div>
         <div style={{ color: C.muted, fontSize: 13 }}>{done} quêtes complétées aujourd'hui</div>
       </Card>
 
