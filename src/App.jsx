@@ -894,11 +894,50 @@ const COMMUNITY_POSTS = [
   { id: 5, user: "Sonia", emoji: "🎵", time: "hier", text: "La musique m'a sauvée aujourd'hui. Un morceau, les yeux fermés, 5 minutes. Parfois c'est tout ce qu'il faut.", likes: 38, comments: 7, liked: false },
 ];
 
-function CommunauteScreen({ onBack }) {
+function CommunauteScreen({ onBack, user }) {
   const [posts, setPosts] = useState(COMMUNITY_POSTS);
   const [newPost, setNewPost] = useState("");
   const [showWrite, setShowWrite] = useState(false);
   const [tab, setTab] = useState("fil");
+  const [loading, setLoading] = useState(false);
+  const [publishing, setPublishing] = useState(false);
+
+  // Charger les vrais posts depuis Supabase
+  useEffect(() => {
+    const loadPosts = async () => {
+      if (!user?.token) return;
+      setLoading(true);
+      try {
+        const data = await supabase.getPosts(user.token);
+        if (Array.isArray(data) && data.length > 0) {
+          const formatted = data.map(p => ({
+            id: p.id,
+            user: p.user_name || "Anonyme",
+            emoji: ["🌸","🌊","🌻","⭐","🎵","💜","🌿"][Math.floor(Math.random()*7)],
+            time: timeAgo(p.created_at),
+            text: p.content,
+            likes: p.likes || 0,
+            comments: 0,
+            liked: false,
+            real: true,
+          }));
+          setPosts([...formatted, ...COMMUNITY_POSTS]);
+        }
+      } catch(e) { console.log("Could not load posts"); }
+      setLoading(false);
+    };
+    loadPosts();
+  }, []);
+
+  const timeAgo = (dateStr) => {
+    const diff = Date.now() - new Date(dateStr).getTime();
+    const mins = Math.floor(diff / 60000);
+    if (mins < 1) return "à l'instant";
+    if (mins < 60) return "il y a " + mins + " min";
+    const hours = Math.floor(mins / 60);
+    if (hours < 24) return "il y a " + hours + "h";
+    return "il y a " + Math.floor(hours/24) + "j";
+  };
 
   const toggleLike = (id) => {
     setPosts(prev => prev.map(p => p.id === id
@@ -907,14 +946,33 @@ function CommunauteScreen({ onBack }) {
     ));
   };
 
-  const publish = () => {
-    if (!newPost.trim()) return;
-    setPosts(prev => [{
-      id: Date.now(), user: "Moi", emoji: "🌸", time: "à l'instant",
-      text: newPost, likes: 0, comments: 0, liked: false
-    }, ...prev]);
+  const publish = async () => {
+    if (!newPost.trim() || publishing) return;
+    setPublishing(true);
+    const optimistic = {
+      id: Date.now(),
+      user: user?.prenom || "Moi",
+      emoji: "🌸",
+      time: "à l'instant",
+      text: newPost,
+      likes: 0, comments: 0, liked: false, real: true,
+    };
+    setPosts(prev => [optimistic, ...prev]);
     setNewPost("");
     setShowWrite(false);
+
+    try {
+      if (user?.token) {
+        await supabase.createPost({
+          user_id: user.id,
+          user_name: user.prenom || "Anonyme",
+          content: optimistic.text,
+          likes: 0,
+          created_at: new Date().toISOString()
+        }, user.token);
+      }
+    } catch(e) { console.log("Post save error", e); }
+    setPublishing(false);
   };
 
   return (
@@ -963,6 +1021,11 @@ function CommunauteScreen({ onBack }) {
 
       {tab === "fil" && (
         <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+          {loading && (
+            <div style={{ textAlign: "center", padding: 20, color: C.muted, fontSize: 14 }}>
+              Chargement des posts... 🌸
+            </div>
+          )}
           {posts.map(p => (
             <Card key={p.id} style={{ padding: 16 }}>
               <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10 }}>
@@ -971,7 +1034,10 @@ function CommunauteScreen({ onBack }) {
                   {p.emoji}
                 </div>
                 <div>
-                  <div style={{ fontWeight: 700, color: C.text, fontSize: 14 }}>{p.user}</div>
+                  <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                    <span style={{ fontWeight: 700, color: C.text, fontSize: 14 }}>{p.user}</span>
+                    {p.real && <span style={{ fontSize: 10, background: C.greenPale, color: C.green, padding: "2px 6px", borderRadius: 8, fontWeight: 700 }}>Réel</span>}
+                  </div>
                   <div style={{ fontSize: 12, color: C.muted }}>{p.time}</div>
                 </div>
               </div>
@@ -1045,7 +1111,7 @@ const HUMEUR_DATA = [
   { jour: "Dim", score: null, emoji: "?" },
 ];
 
-function SuiviHumeurScreen({ onBack }) {
+function SuiviHumeurScreen({ onBack, user }) {
   const [data, setData] = useState(HUMEUR_DATA);
   const [selected, setSelected] = useState(null);
   const [periode, setPeriode] = useState("semaine");
@@ -1058,9 +1124,41 @@ function SuiviHumeurScreen({ onBack }) {
     { score: 5, emoji: "😊", label: "Très bien" },
   ];
 
-  const logToday = (score) => {
+  // Charger l'historique depuis Supabase
+  useEffect(() => {
+    const loadHumeur = async () => {
+      if (!user?.token || !user?.id) return;
+      try {
+        const data = await supabase.getHumeur(user.id, user.token);
+        if (Array.isArray(data) && data.length > 0) {
+          const days = ["Dim","Lun","Mar","Mer","Jeu","Ven","Sam"];
+          const updated = HUMEUR_DATA.map(d => {
+            const match = data.find(h => {
+              const hDay = new Date(h.created_at).getDay();
+              return days[hDay] === d.jour;
+            });
+            return match ? { ...d, score: match.score, emoji: HUMEURS[match.score-1]?.emoji || d.emoji } : d;
+          });
+          setData(updated);
+        }
+      } catch(e) { console.log("Could not load humeur"); }
+    };
+    loadHumeur();
+  }, []);
+
+  const logToday = async (score) => {
     setData(prev => prev.map((d, i) => i === prev.length - 1 ? { ...d, score, emoji: HUMEURS[score-1].emoji } : d));
     setSelected(score);
+    try {
+      if (user?.token) {
+        await supabase.saveHumeur({
+          user_id: user.id,
+          score,
+          note: "",
+          created_at: new Date().toISOString()
+        }, user.token);
+      }
+    } catch(e) { console.log("Could not save humeur"); }
   };
 
   const maxScore = 5;
@@ -2141,7 +2239,15 @@ function MentalBloom({ user, onLogout }) {
   const [quests, setQuests] = useState(QUESTS);
   const [mode, setMode] = useState(user.mode || "Mode libre");
 
-  const addCoins = (n) => setCoins(c => c + n);
+  const addCoins = async (n) => {
+    const newTotal = coins + n;
+    setCoins(newTotal);
+    // Save to localStorage as backup
+    if (user) {
+      const saved = JSON.parse(localStorage.getItem("mb_current_user") || "{}");
+      localStorage.setItem("mb_current_user", JSON.stringify({...saved, coins: newTotal}));
+    }
+  };
   const spendCoins = (n) => setCoins(c => Math.max(0, c - n));
 
   const noNav = [S.CHAT_ROOM];
@@ -2168,8 +2274,8 @@ function MentalBloom({ user, onLogout }) {
         {screen === S.JOURNAL    && <JournalScreen    onBack={() => setScreen(S.GAME)} addCoins={addCoins} />}
         {screen === S.GRATITUDE  && <GratitudeScreen  onBack={() => setScreen(S.GAME)} addCoins={addCoins} />}
         {screen === S.COGNITIF   && <CognitifScreen   onBack={() => setScreen(S.GAME)} addCoins={addCoins} />}
-        {screen === S.COMMUNAUTE && <CommunauteScreen onBack={() => setScreen(S.HOME)} />}
-        {screen === S.HUMEUR     && <SuiviHumeurScreen onBack={() => setScreen(S.HOME)} />}
+        {screen === S.COMMUNAUTE && <CommunauteScreen onBack={() => setScreen(S.HOME)} user={user} />}
+        {screen === S.HUMEUR     && <SuiviHumeurScreen onBack={() => setScreen(S.HOME)} user={user} />}
         {screen === S.URGENCES   && <UrgencesScreen   onBack={() => setScreen(S.HOME)} />}
         {screen === S.RAPPELS    && <RappelsScreen    onBack={() => setScreen(S.HOME)} />}
         {screen === S.CHAT && <ChatScreen onBack={() => setScreen(S.HOME)} setScreen={setScreen} setChatContact={setChatContact} />}
