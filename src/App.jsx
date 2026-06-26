@@ -644,18 +644,62 @@ function HomeScreen({ setScreen, quests, coins, user, currentAvatar, setCurrentA
 
       {/* Nav grid */}
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 20 }}>
-        {[
-          { icon: "🎮", label: "Activités", sub: "Exercices & jeux", s: S.GAME, color: C.purple },
-          { icon: "🗺️", label: "Quêtes", sub: `${done}/${quests.length} aujourd'hui`, s: S.QUESTS, color: C.green },
-          { icon: "💬", label: "Parler", sub: "Soignants & pairs", s: S.CHAT, color: C.orange },
-          { icon: "📚", label: "Ressources", sub: "Fiches & guides", s: S.RESOURCES, color: C.pink },
-        ].map(item => (
-          <Card key={item.s} onClick={() => setScreen(item.s)} style={{ borderTop: `3px solid ${item.color}`, padding: "14px 12px", textAlign: "center" }}>
-            <div style={{ fontSize: 28 }}>{item.icon}</div>
-            <div style={{ fontWeight: 700, fontSize: 14, color: C.text, marginTop: 4 }}>{item.label}</div>
-            <div style={{ fontSize: 11, color: C.muted, marginTop: 2 }}>{item.sub}</div>
-          </Card>
-        ))}
+        <Card onClick={() => setScreen(S.GAME)} style={{ borderTop: `3px solid ${C.purple}`, padding: "14px 12px", textAlign: "center", cursor: "pointer" }}>
+          <div style={{ display: "flex", justifyContent: "center", marginBottom: 6 }}>
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={C.purple} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+          </div>
+          <div style={{ fontWeight: 700, fontSize: 13, color: C.text }}>Activités</div>
+          <div style={{ fontSize: 11, color: C.muted, marginTop: 2 }}>Exercices & jeux</div>
+        </Card>
+        <Card onClick={() => setScreen(S.QUESTS)} style={{ borderTop: `3px solid ${C.green}`, padding: "14px 12px", textAlign: "center", cursor: "pointer" }}>
+          <div style={{ display: "flex", justifyContent: "center", marginBottom: 6 }}>
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={C.green} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+          </div>
+          <div style={{ fontWeight: 700, fontSize: 13, color: C.text }}>Quêtes</div>
+          <div style={{ fontSize: 11, color: C.muted, marginTop: 2 }}>{done}/{quests.length} aujourd'hui</div>
+        </Card>
+        <Card onClick={() => setScreen(S.CHAT)} style={{ borderTop: `3px solid ${C.orange}`, padding: "14px 12px", textAlign: "center", cursor: "pointer" }}>
+          <div style={{ display: "flex", justifyContent: "center", marginBottom: 6 }}>
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={C.orange} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+          </div>
+          <div style={{ fontWeight: 700, fontSize: 13, color: C.text }}>Parler</div>
+          <div style={{ fontSize: 11, color: C.muted, marginTop: 2 }}>Soignants & pairs</div>
+        </Card>
+        <Card onClick={() => setScreen(S.RESOURCES)} style={{ borderTop: `3px solid ${C.pink}`, padding: "14px 12px", textAlign: "center", cursor: "pointer" }}>
+          <div style={{ display: "flex", justifyContent: "center", marginBottom: 6 }}>
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={C.pink} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/><line x1="10" y1="8" x2="16" y2="8"/><line x1="10" y1="12" x2="16" y2="12"/></svg>
+          </div>
+          <div style={{ fontWeight: 700, fontSize: 13, color: C.text }}>Ressources</div>
+          <div style={{ fontSize: 11, color: C.muted, marginTop: 2 }}>Fiches & guides</div>
+        </Card>
+        <Card onClick={() => setScreen(S.COMMUNAUTE)} style={{ borderTop: `3px solid ${C.purple}`, padding: "14px 12px", textAlign: "center", cursor: "pointer" }}>
+          <div style={{ display: "flex", justifyContent: "center", marginBottom: 6 }}>
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={C.purple} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+          </div>
+          <div style={{ fontWeight: 700, fontSize: 13, color: C.text }}>Communauté</div>
+          <div style={{ fontSize: 11, color: C.muted, marginTop: 2 }}>Espace d'échange</div>
+        </Card>
+        <Card onClick={() => setScreen(S.HUMEUR)} style={{ borderTop: `3px solid ${C.green}`, padding: "14px 12px", textAlign: "center", cursor: "pointer" }}>
+          <div style={{ display: "flex", justifyContent: "center", marginBottom: 6 }}>
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={C.green} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          </div>
+          <div style={{ fontWeight: 700, fontSize: 13, color: C.text }}>Mon humeur</div>
+          <div style={{ fontSize: 11, color: C.muted, marginTop: 2 }}>Suivi émotionnel</div>
+        </Card>
+        <Card onClick={() => setScreen(S.URGENCES)} style={{ borderTop: "3px solid #E05A5A", padding: "14px 12px", textAlign: "center", cursor: "pointer" }}>
+          <div style={{ display: "flex", justifyContent: "center", marginBottom: 6 }}>
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#E05A5A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.68A2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z"/></svg>
+          </div>
+          <div style={{ fontWeight: 700, fontSize: 13, color: C.text }}>Urgences</div>
+          <div style={{ fontSize: 11, color: C.muted, marginTop: 2 }}>Contacts & structures</div>
+        </Card>
+        <Card onClick={() => setScreen(S.RAPPELS)} style={{ borderTop: `3px solid ${C.orange}`, padding: "14px 12px", textAlign: "center", cursor: "pointer" }}>
+          <div style={{ display: "flex", justifyContent: "center", marginBottom: 6 }}>
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={C.orange} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+          </div>
+          <div style={{ fontWeight: 700, fontSize: 13, color: C.text }}>Rappels</div>
+          <div style={{ fontSize: 11, color: C.muted, marginTop: 2 }}>Doux et sans pression</div>
+        </Card>
       </div>
 
       {/* Lives */}
@@ -2674,14 +2718,15 @@ function Heidi({ user, onLogout }) {
 
   if (screen === S.CHAT_ROOM) return <ChatRoomScreen onBack={() => setScreen(S.CHAT)} contact={chatContact} user={user} />;
 
-  const navItems = [
-    { icon: "🏠", label: "Accueil", s: S.HOME },
-    { icon: "🗺️", label: "Quêtes", s: S.QUESTS },
-    { icon: "💬", label: "Chat", s: S.CHAT },
-    { icon: "📚", label: "Ressources", s: S.RESOURCES },
+  const NAV_ITEMS = [
+    { label: "Accueil", s: S.HOME, svg: <><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></> },
+    { label: "Quêtes", s: S.QUESTS, svg: <><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></> },
+    { label: "Chat", s: S.CHAT, svg: <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/> },
+    { label: "Ressources", s: S.RESOURCES, svg: <><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></> },
   ];
 
   const mainScreens = [S.HOME, S.QUESTS, S.CHAT, S.RESOURCES];
+
 
   return (
     <div style={{ fontFamily: "'Inter', system-ui, sans-serif", background: C.bg, minHeight: "100vh", maxWidth: 430, margin: "0 auto", display: "flex", flexDirection: "column" }}>
@@ -2706,7 +2751,7 @@ function Heidi({ user, onLogout }) {
       </div>
 
       <nav style={{ position: "fixed", bottom: 0, left: "50%", transform: "translateX(-50%)", width: "100%", maxWidth: 430, background: C.bgCard, borderTop: `1px solid ${C.border}`, display: "flex", justifyContent: "space-around", padding: "8px 0 16px" }}>
-        {navItems.map(item => (
+        {NAV_ITEMS.map(item => (
           <button key={item.s} onClick={() => setScreen(item.s)} style={{ background: "none", border: "none", display: "flex", flexDirection: "column", alignItems: "center", gap: 3, cursor: "pointer", padding: "4px 12px", color: screen === item.s ? C.purple : C.muted, fontWeight: screen === item.s ? 700 : 400 }}>
             <span style={{ fontSize: 20 }}>{item.icon}</span>
             <span style={{ fontSize: 11 }}>{item.label}</span>
