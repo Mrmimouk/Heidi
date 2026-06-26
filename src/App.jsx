@@ -1814,7 +1814,7 @@ function ProfileScreen({ onBack, coins, quests, mode, setMode, user, onLogout })
 
       <Card style={{ background: C.purplePale, border: "none" }}>
         <p style={{ margin: 0, fontSize: 13, color: C.text, lineHeight: 1.7 }}>
-          🔒 <strong>Tes données t'appartiennent.</strong> MentalBloom respecte le RGPD. Aucune donnée de santé n'est vendue ni partagée sans ton consentement.
+          🔒 <strong>Tes données t'appartiennent.</strong> Heidi respecte le RGPD. Aucune donnée de santé n'est vendue ni partagée sans ton consentement.
         </p>
       </Card>
     </div>
@@ -1836,7 +1836,7 @@ function SplashScreen({ onFinish }) {
       display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
       fontFamily: "'Inter', system-ui, sans-serif" }}>
       <div style={{ fontSize: 72, marginBottom: 16 }}>🌸</div>
-      <div style={{ fontSize: 32, fontWeight: 800, color: "#fff", letterSpacing: "-0.5px" }}>MentalBloom</div>
+      <div style={{ fontSize: 32, fontWeight: 800, color: "#fff", letterSpacing: "-0.5px" }}>Heidi</div>
       <div style={{ fontSize: 16, color: "rgba(255,255,255,0.8)", marginTop: 8 }}>Un espace pour toi, à ton rythme</div>
       <div style={{ marginTop: 48, display: "flex", gap: 8 }}>
         {[0,1,2].map(i => (
@@ -1855,7 +1855,7 @@ function OnboardingScreen({ onFinish }) {
   const slides = [
     {
       emoji: "🌸",
-      title: "Bienvenue sur MentalBloom",
+      title: "Bienvenue sur Heidi",
       desc: "Un espace bienveillant pour prendre soin de ta santé mentale, à ton propre rythme.",
       bg: `linear-gradient(135deg, ${C.purple}, ${C.purpleLight})`,
     },
@@ -1874,7 +1874,7 @@ function OnboardingScreen({ onFinish }) {
     {
       emoji: "💜",
       title: "Aucun jugement, aucune pression",
-      desc: "MentalBloom ne récompense pas la performance. Il valorise ta présence et tes petits pas.",
+      desc: "Heidi ne récompense pas la performance. Il valorise ta présence et tes petits pas.",
       bg: `linear-gradient(135deg, ${C.pink}, #D06090)`,
     },
   ];
@@ -2231,7 +2231,7 @@ function RegisterScreen({ onRegister, onGoLogin }) {
   );
 }
 
-function MentalBloom({ user, onLogout }) {
+function Heidi({ user, onLogout }) {
   const [screen, setScreen] = useState(S.HOME);
   const [chatContact, setChatContact] = useState(null);
   const [fiche, setFiche] = useState(null);
@@ -2329,7 +2329,7 @@ export default function App() {
   if (authState === "onboarding") return <OnboardingScreen onFinish={() => setAuthState("login")} />;
   if (authState === "login") return <LoginScreen onLogin={handleLogin} onGoRegister={() => setAuthState("register")} />;
   if (authState === "register") return <RegisterScreen onRegister={handleLogin} onGoLogin={() => setAuthState("login")} />;
-  if (authState === "app") return <MentalBloom user={currentUser} onLogout={handleLogout} />;
+  if (authState === "app") return <Heidi user={currentUser} onLogout={handleLogout} />;
 
   return null;
 }
