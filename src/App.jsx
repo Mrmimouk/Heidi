@@ -180,7 +180,7 @@ const FICHES = [
   {
     id: 1, icon: "😔", title: "Dépression", color: C.purplePale, border: C.purple,
     symptomes: ["Tristesse persistante", "Perte d'intérêt", "Fatigue intense", "Troubles du sommeil", "Difficultés de concentration"],
-    traitements: ["Psychothérapie (TCC)", "Antidépresseurs si nécessaire", "Activité physique adaptée"],
+    traitements: ["Psychothérapie (TCC — Thérapie Cognitive et Comportementale)", "Antidépresseurs si nécessaire", "Activité physique adaptée"],
     ressources: ["3114 — Prévention suicide", "Psycom.fr", "Mon médecin traitant"],
   },
   {
@@ -209,9 +209,45 @@ const MEDICAMENTS = [
   { nom: "Lithium", famille: "Stabilisateur de l'humeur", indications: "Trouble bipolaire", effets_freq: ["Tremblements légers", "Soif", "Polyurie"], effets_rares: ["Toxicité rénale"], precautions: "Suivi sanguin régulier obligatoire." },
 ];
 
-
+const URGENCES = [
+  { nom: "Urgences psychiatriques CHU", ville: "Paris 13e", tel: "01 42 16 00 00", ouvert: "24h/24" },
+  { nom: "CMP — Centre médico-psychologique", ville: "Paris 11e", tel: "01 43 67 12 34", ouvert: "Lun-Ven 9h-17h" },
+  { nom: "Clinique des Lilas", ville: "Les Lilas (93)", tel: "01 49 72 72 00", ouvert: "24h/24" },
+];
 
 // ─── Components ───────────────────────────────────────────────
+
+// ─── PsychoCoin ───────────────────────────────────────────────
+function PsychoCoin({ size = 28 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 40 40">
+      <defs>
+        <radialGradient id="coinGold" cx="40%" cy="35%" r="60%">
+          <stop offset="0%" stopColor="#FFF0A0" />
+          <stop offset="30%" stopColor="#FFD700" />
+          <stop offset="65%" stopColor="#C8A000" />
+          <stop offset="100%" stopColor="#8B6000" />
+        </radialGradient>
+        <radialGradient id="coinInner" cx="40%" cy="35%" r="60%">
+          <stop offset="0%" stopColor="#FFF5B0" />
+          <stop offset="40%" stopColor="#F5C400" />
+          <stop offset="100%" stopColor="#A07800" />
+        </radialGradient>
+      </defs>
+      <ellipse cx="21" cy="21" rx="17" ry="17" fill="rgba(0,0,0,0.18)" />
+      <circle cx="20" cy="20" r="18" fill="url(#coinGold)" />
+      <circle cx="20" cy="20" r="16" fill="none" stroke="#FFE44D" strokeWidth="0.6" />
+      <circle cx="20" cy="20" r="14" fill="url(#coinInner)" />
+      <circle cx="20" cy="20" r="13.5" fill="none" stroke="#A07800" strokeWidth="0.8" />
+      <text x="21" y="25.5" textAnchor="middle" fontSize="12" fontWeight="900"
+        fontFamily="Georgia, serif" fill="#7A5500" letterSpacing="0.5">PC</text>
+      <text x="20.5" y="25" textAnchor="middle" fontSize="12" fontWeight="900"
+        fontFamily="Georgia, serif" fill="#FFF0A0" letterSpacing="0.5">PC</text>
+      <ellipse cx="13" cy="12" rx="5" ry="3" fill="rgba(255,255,255,0.45)" transform="rotate(-35 13 12)" />
+    </svg>
+  );
+}
+
 
 function Tag({ label, color, bg }) {
   return (
@@ -250,9 +286,8 @@ function Btn({ children, onClick, color = C.purple, style = {}, small = false })
 
 function BackBtn({ onBack }) {
   return (
-    <button onClick={onBack} style={{ background: "none", border: "none", color: C.purple, fontWeight: 700, fontSize: 14, cursor: "pointer", padding: "0 0 16px", display: "flex", alignItems: "center", gap: 6 }}>
-      <Icon name="back" size={18} color={C.purple} />
-      Retour
+    <button onClick={onBack} style={{ background: "none", border: "none", color: C.purple, fontWeight: 700, fontSize: 15, cursor: "pointer", padding: "0 0 16px", display: "flex", alignItems: "center", gap: 6 }}>
+      ← Retour
     </button>
   );
 }
@@ -260,298 +295,107 @@ function BackBtn({ onBack }) {
 // ─── Screens ──────────────────────────────────────────────────
 
 
-
-
-
-// ─── PsychoCoin ───────────────────────────────────────────────
-function PsychoCoin({ size = 28 }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 40 40">
-      <defs>
-        <radialGradient id="coinGold" cx="40%" cy="35%" r="60%">
-          <stop offset="0%" stopColor="#FFF0A0" />
-          <stop offset="30%" stopColor="#FFD700" />
-          <stop offset="65%" stopColor="#C8A000" />
-          <stop offset="100%" stopColor="#8B6000" />
-        </radialGradient>
-        <radialGradient id="coinInner" cx="40%" cy="35%" r="60%">
-          <stop offset="0%" stopColor="#FFF5B0" />
-          <stop offset="40%" stopColor="#F5C400" />
-          <stop offset="100%" stopColor="#A07800" />
-        </radialGradient>
-      </defs>
-      {/* Shadow */}
-      <ellipse cx="21" cy="21" rx="17" ry="17" fill="rgba(0,0,0,0.18)" />
-      {/* Outer coin body */}
-      <circle cx="20" cy="20" r="18" fill="url(#coinGold)" />
-      {/* Rim detail */}
-      <circle cx="20" cy="20" r="18" fill="none" stroke="#8B6000" strokeWidth="1" />
-      <circle cx="20" cy="20" r="16" fill="none" stroke="#FFE44D" strokeWidth="0.6" />
-      {/* Inner face */}
-      <circle cx="20" cy="20" r="14" fill="url(#coinInner)" />
-      {/* Engraved inner ring */}
-      <circle cx="20" cy="20" r="13.5" fill="none" stroke="#A07800" strokeWidth="0.8" />
-      {/* PC text - engraved look */}
-      <text x="21" y="25.5" textAnchor="middle" fontSize="12" fontWeight="900"
-        fontFamily="Georgia, serif" fill="#7A5500" letterSpacing="0.5">PC</text>
-      <text x="20.5" y="25" textAnchor="middle" fontSize="12" fontWeight="900"
-        fontFamily="Georgia, serif" fill="#FFF0A0" letterSpacing="0.5">PC</text>
-      {/* Stars/dots decoration */}
-      <circle cx="20" cy="10" r="1" fill="#8B6000" opacity="0.6"/>
-      <circle cx="20" cy="30" r="1" fill="#8B6000" opacity="0.6"/>
-      <circle cx="10" cy="20" r="1" fill="#8B6000" opacity="0.6"/>
-      <circle cx="30" cy="20" r="1" fill="#8B6000" opacity="0.6"/>
-      {/* Shine highlight */}
-      <ellipse cx="13" cy="12" rx="5" ry="3" fill="rgba(255,255,255,0.45)" transform="rotate(-35 13 12)" />
-      <ellipse cx="27" cy="28" rx="3" ry="1.5" fill="rgba(0,0,0,0.1)" transform="rotate(-35 27 28)" />
-    </svg>
-  );
-}
-
-// ─── Icônes SVG professionnelles ─────────────────────────────
-function Icon({ name, size = 28, color = "currentColor" }) {
-  const icons = {
-    activities: (
-      <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M12 2a10 10 0 100 20A10 10 0 0012 2z"/>
-        <path d="M12 6v6l4 3"/>
-      </svg>
-    ),
-    quests: (
-      <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-      </svg>
-    ),
-    chat: (
-      <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
-      </svg>
-    ),
-    resources: (
-      <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="12" cy="12" r="10"/>
-        <line x1="12" y1="8" x2="12" y2="12"/>
-        <line x1="12" y1="16" x2="12.01" y2="16"/>
-      </svg>
-    ),
-    community: (
-      <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
-        <circle cx="9" cy="7" r="4"/>
-        <path d="M23 21v-2a4 4 0 00-3-3.87"/>
-        <path d="M16 3.13a4 4 0 010 7.75"/>
-      </svg>
-    ),
-    mood: (
-      <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
-      </svg>
-    ),
-    emergency: (
-      <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.68A2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z"/>
-      </svg>
-    ),
-    reminders: (
-      <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/>
-        <path d="M13.73 21a2 2 0 01-3.46 0"/>
-      </svg>
-    ),
-    live: (
-      <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <polygon points="23 7 16 12 23 17 23 7"/>
-        <rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
-      </svg>
-    ),
-    home: (
-      <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
-        <polyline points="9 22 9 12 15 12 15 22"/>
-      </svg>
-    ),
-    breathe: (
-      <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M12 22a8 8 0 01-8-8c0-3.5 2-6.5 5-8"/>
-        <path d="M12 2a8 8 0 018 8c0 3.5-2 6.5-5 8"/>
-        <circle cx="12" cy="12" r="3"/>
-      </svg>
-    ),
-    scan: (
-      <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/>
-        <path d="M12 6v6l4 2"/>
-      </svg>
-    ),
-    journal: (
-      <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
-        <polyline points="14 2 14 8 20 8"/>
-        <line x1="16" y1="13" x2="8" y2="13"/>
-        <line x1="16" y1="17" x2="8" y2="17"/>
-        <polyline points="10 9 9 9 8 9"/>
-      </svg>
-    ),
-    gratitude: (
-      <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/>
-      </svg>
-    ),
-    cognitive: (
-      <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/>
-        <circle cx="12" cy="12" r="10"/>
-        <line x1="12" y1="17" x2="12.01" y2="17"/>
-      </svg>
-    ),
-    profile: (
-      <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
-        <circle cx="12" cy="7" r="4"/>
-      </svg>
-    ),
-    sos: (
-      <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="12" cy="12" r="10"/>
-        <line x1="12" y1="8" x2="12" y2="12"/>
-        <line x1="12" y1="16" x2="12.01" y2="16"/>
-      </svg>
-    ),
-    coins: (
-      <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="12" cy="12" r="10"/>
-        <path d="M12 8v8M9 10h4.5a1.5 1.5 0 010 3H10a1.5 1.5 0 000 3H15"/>
-      </svg>
-    ),
-    arrow: (
-      <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <line x1="5" y1="12" x2="19" y2="12"/>
-        <polyline points="12 5 19 12 12 19"/>
-      </svg>
-    ),
-    send: (
-      <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <line x1="22" y1="2" x2="11" y2="13"/>
-        <polygon points="22 2 15 22 11 13 2 9 22 2"/>
-      </svg>
-    ),
-    back: (
-      <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <line x1="19" y1="12" x2="5" y2="12"/>
-        <polyline points="12 19 5 12 12 5"/>
-      </svg>
-    ),
-  };
-  return icons[name] || null;
-}
-
 // ─── Avatars émotions ─────────────────────────────────────────
 const EMOTION_AVATARS = [
-  // ── Émotions de base ──
-  { id: "joie", emoji: "😊", label: "Joie", color: "#FFD700", bg: "#FEF9E4",
-    svg: `<circle cx="50" cy="50" r="45" fill="#FFD700" stroke="#F0A500" stroke-width="2"/><circle cx="35" cy="40" r="6" fill="#2A2540"/><circle cx="65" cy="40" r="6" fill="#2A2540"/><circle cx="37" cy="38" r="2" fill="white"/><circle cx="67" cy="38" r="2" fill="white"/><path d="M 30 60 Q 50 78 70 60" stroke="#2A2540" stroke-width="3" fill="none" stroke-linecap="round"/><ellipse cx="25" cy="58" rx="8" ry="5" fill="#FFB3C6" opacity="0.5"/><ellipse cx="75" cy="58" rx="8" ry="5" fill="#FFB3C6" opacity="0.5"/>` },
-  { id: "tristesse", emoji: "😔", label: "Tristesse", color: "#7EB8D4", bg: "#E5F0FF",
-    svg: `<circle cx="50" cy="50" r="45" fill="#7EB8D4" stroke="#5A9AC0" stroke-width="2"/><circle cx="35" cy="42" r="6" fill="#2A2540"/><circle cx="65" cy="42" r="6" fill="#2A2540"/><circle cx="37" cy="40" r="2" fill="white"/><circle cx="67" cy="40" r="2" fill="white"/><path d="M 30 65 Q 50 55 70 65" stroke="#2A2540" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M 28 35 Q 35 30 40 38" stroke="#2A2540" stroke-width="2" fill="none"/><path d="M 72 35 Q 65 30 60 38" stroke="#2A2540" stroke-width="2" fill="none"/><circle cx="38" cy="58" r="3" fill="#A8D4F0" opacity="0.8"/><circle cx="62" cy="60" r="3" fill="#A8D4F0" opacity="0.8"/>` },
-  { id: "colere", emoji: "😡", label: "Colère", color: "#E05A5A", bg: "#FEE2E2",
-    svg: `<circle cx="50" cy="50" r="45" fill="#E05A5A" stroke="#C04040" stroke-width="2"/><circle cx="35" cy="45" r="6" fill="#2A2540"/><circle cx="65" cy="45" r="6" fill="#2A2540"/><path d="M 30 63 Q 50 55 70 63" stroke="#2A2540" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M 25 30 L 45 38" stroke="#2A2540" stroke-width="3" stroke-linecap="round"/><path d="M 75 30 L 55 38" stroke="#2A2540" stroke-width="3" stroke-linecap="round"/>` },
-  { id: "peur", emoji: "😱", label: "Peur", color: "#9B8EC4", bg: "#EDE8F8",
-    svg: `<circle cx="50" cy="50" r="45" fill="#9B8EC4" stroke="#7B6EA4" stroke-width="2"/><ellipse cx="35" cy="42" rx="8" ry="9" fill="#2A2540"/><ellipse cx="65" cy="42" rx="8" ry="9" fill="#2A2540"/><circle cx="37" cy="40" r="3" fill="white"/><circle cx="67" cy="40" r="3" fill="white"/><ellipse cx="50" cy="64" rx="14" ry="10" fill="#2A2540"/><ellipse cx="50" cy="64" rx="10" ry="7" fill="#1A1530"/><path d="M 28 32 Q 36 26 42 34" stroke="#2A2540" stroke-width="2" fill="none"/>` },
-  { id: "surprise", emoji: "😮", label: "Surprise", color: "#F4C430", bg: "#FEF9E4",
-    svg: `<circle cx="50" cy="50" r="45" fill="#F4C430" stroke="#D4A410" stroke-width="2"/><ellipse cx="35" cy="40" rx="7" ry="8" fill="#2A2540"/><ellipse cx="65" cy="40" rx="7" ry="8" fill="#2A2540"/><circle cx="37" cy="38" r="2.5" fill="white"/><circle cx="67" cy="38" r="2.5" fill="white"/><ellipse cx="50" cy="65" rx="12" ry="10" fill="#2A2540"/><path d="M 28 30 Q 35 24 40 32" stroke="#2A2540" stroke-width="2" fill="none"/>` },
-  { id: "degout", emoji: "🤢", label: "Dégoût", color: "#7BBF9A", bg: "#E4F5EC",
-    svg: `<circle cx="50" cy="50" r="45" fill="#7BBF9A" stroke="#5AA882" stroke-width="2"/><path d="M 28 40 Q 35 36 42 40" stroke="#2A2540" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M 58 40 Q 65 36 72 40" stroke="#2A2540" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M 35 62 Q 43 57 50 62 Q 57 67 65 62" stroke="#2A2540" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M 28 33 L 42 38" stroke="#2A2540" stroke-width="2"/><path d="M 72 33 L 58 38" stroke="#2A2540" stroke-width="2"/>` },
-  { id: "mepris", emoji: "😒", label: "Mépris", color: "#B0A0A0", bg: "#F5F0F0",
-    svg: `<circle cx="50" cy="50" r="45" fill="#B0A0A0" stroke="#907080" stroke-width="2"/><path d="M 28 40 Q 35 36 42 42" stroke="#2A2540" stroke-width="2.5" fill="none"/><circle cx="65" cy="40" r="6" fill="#2A2540"/><circle cx="67" cy="38" r="2" fill="white"/><path d="M 33 63 Q 45 58 60 65" stroke="#2A2540" stroke-width="2.5" fill="none" stroke-linecap="round"/>` },
-  { id: "confiance", emoji: "🤝", label: "Confiance", color: "#4A90D9", bg: "#E5F0FF",
-    svg: `<circle cx="50" cy="50" r="45" fill="#4A90D9" stroke="#2A70B9" stroke-width="2"/><circle cx="35" cy="40" r="6" fill="#2A2540"/><circle cx="65" cy="40" r="6" fill="#2A2540"/><circle cx="37" cy="38" r="2" fill="white"/><circle cx="67" cy="38" r="2" fill="white"/><path d="M 30 60 Q 50 72 70 60" stroke="#2A2540" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M 15 55 Q 22 48 30 54" stroke="#4A90D9" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M 85 55 Q 78 48 70 54" stroke="#4A90D9" stroke-width="3" fill="none" stroke-linecap="round"/>` },
-  { id: "anticipation", emoji: "🤩", label: "Anticipation", color: "#FF8C42", bg: "#FEF0E4",
-    svg: `<circle cx="50" cy="50" r="45" fill="#FF8C42" stroke="#DD6C22" stroke-width="2"/><circle cx="35" cy="40" r="7" fill="#2A2540"/><circle cx="65" cy="40" r="7" fill="#2A2540"/><circle cx="38" cy="37" r="3" fill="white"/><circle cx="68" cy="37" r="3" fill="white"/><path d="M 28 60 Q 50 76 72 60" stroke="#2A2540" stroke-width="3" fill="#FFB380" stroke-linecap="round"/><path d="M 42 15 L 45 25" stroke="#FFD700" stroke-width="2" stroke-linecap="round"/><path d="M 50 12 L 50 22" stroke="#FFD700" stroke-width="2" stroke-linecap="round"/><path d="M 58 15 L 55 25" stroke="#FFD700" stroke-width="2" stroke-linecap="round"/>` },
-  { id: "amour", emoji: "🥰", label: "Amour", color: "#E891B0", bg: "#FDEAF2",
-    svg: `<circle cx="50" cy="50" r="45" fill="#E891B0" stroke="#C86090" stroke-width="2"/><circle cx="35" cy="40" r="6" fill="#2A2540"/><circle cx="65" cy="40" r="6" fill="#2A2540"/><circle cx="37" cy="38" r="2" fill="white"/><circle cx="67" cy="38" r="2" fill="white"/><path d="M 28 60 Q 50 76 72 60" stroke="#2A2540" stroke-width="3" fill="#FFB3C6" stroke-linecap="round"/><path d="M 18 22 Q 24 14 30 22 Q 24 30 18 22Z" fill="#E05A5A"/><path d="M 30 15 Q 36 7 42 15 Q 36 23 30 15Z" fill="#E05A5A"/><path d="M 58 15 Q 64 7 70 15 Q 64 23 58 15Z" fill="#E05A5A"/><path d="M 70 22 Q 76 14 82 22 Q 76 30 70 22Z" fill="#E05A5A"/>` },
-  { id: "affection", emoji: "😍", label: "Affection", color: "#FF69B4", bg: "#FDEAF2",
-    svg: `<circle cx="50" cy="50" r="45" fill="#FF69B4" stroke="#DD4994" stroke-width="2"/><path d="M 27 35 Q 33 27 39 35 Q 33 43 27 35Z" fill="#E05A5A"/><path d="M 39 28 Q 45 20 51 28 Q 45 36 39 28Z" fill="#E05A5A"/><path d="M 49 35 Q 55 27 61 35 Q 55 43 49 35Z" fill="#E05A5A"/><path d="M 61 28 Q 67 20 73 28 Q 67 36 61 28Z" fill="#E05A5A"/><path d="M 30 62 Q 50 76 70 62" stroke="#2A2540" stroke-width="3" fill="#FFB3C6" stroke-linecap="round"/>` },
-  { id: "compassion", emoji: "🫶", label: "Compassion", color: "#C4AEE8", bg: "#EDE8F8",
-    svg: `<circle cx="50" cy="50" r="45" fill="#C4AEE8" stroke="#A490C8" stroke-width="2"/><circle cx="35" cy="40" r="6" fill="#2A2540"/><circle cx="65" cy="40" r="6" fill="#2A2540"/><circle cx="37" cy="38" r="2" fill="white"/><circle cx="67" cy="38" r="2" fill="white"/><path d="M 30 60 Q 50 74 70 60" stroke="#2A2540" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M 38 68 Q 44 60 50 68 Q 44 76 38 68Z" fill="#E05A5A"/><path d="M 50 65 Q 56 57 62 65 Q 56 73 50 65Z" fill="#E05A5A"/>` },
-  { id: "empathie", emoji: "🫂", label: "Empathie", color: "#7BBF9A", bg: "#E4F5EC",
-    svg: `<circle cx="50" cy="50" r="45" fill="#7BBF9A" stroke="#5AA882" stroke-width="2"/><circle cx="35" cy="40" r="6" fill="#2A2540"/><circle cx="65" cy="40" r="6" fill="#2A2540"/><circle cx="37" cy="38" r="2" fill="white"/><circle cx="67" cy="38" r="2" fill="white"/><path d="M 30 60 Q 50 74 70 60" stroke="#2A2540" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M 12 50 Q 18 40 28 48" stroke="#5AA882" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M 88 50 Q 82 40 72 48" stroke="#5AA882" stroke-width="4" fill="none" stroke-linecap="round"/>` },
-  { id: "gratitude", emoji: "🙏", label: "Gratitude", color: "#F4A261", bg: "#FEF0E4",
-    svg: `<circle cx="50" cy="50" r="45" fill="#F4A261" stroke="#D48241" stroke-width="2"/><circle cx="35" cy="40" r="6" fill="#2A2540"/><circle cx="65" cy="40" r="6" fill="#2A2540"/><circle cx="37" cy="38" r="2" fill="white"/><circle cx="67" cy="38" r="2" fill="white"/><path d="M 30 60 Q 50 74 70 60" stroke="#2A2540" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M 42 72 L 42 85 L 50 80 L 58 85 L 58 72" stroke="#D48241" stroke-width="2.5" fill="none" stroke-linecap="round"/>` },
-  { id: "fierte", emoji: "😤", label: "Fierté", color: "#9B59B6", bg: "#F0E8F8",
-    svg: `<circle cx="50" cy="50" r="45" fill="#9B59B6" stroke="#7B39A6" stroke-width="2"/><circle cx="35" cy="40" r="6" fill="#2A2540"/><circle cx="65" cy="40" r="6" fill="#2A2540"/><circle cx="37" cy="38" r="2" fill="white"/><circle cx="67" cy="38" r="2" fill="white"/><path d="M 30 58 Q 50 70 70 58" stroke="#2A2540" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M 42 20 L 50 8 L 58 20" stroke="#FFD700" stroke-width="3" fill="#FFD700" stroke-linecap="round"/><line x1="50" y1="8" x2="50" y2="28" stroke="#FFD700" stroke-width="2"/>` },
-  { id: "honte", emoji: "😳", label: "Honte", color: "#E07070", bg: "#FEE2E2",
-    svg: `<circle cx="50" cy="50" r="45" fill="#E07070" stroke="#C05050" stroke-width="2"/><path d="M 28 42 Q 35 38 42 42" stroke="#2A2540" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M 58 42 Q 65 38 72 42" stroke="#2A2540" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M 35 65 Q 50 60 65 65" stroke="#2A2540" stroke-width="2.5" fill="none" stroke-linecap="round"/><ellipse cx="28" cy="55" rx="10" ry="7" fill="#FF6B6B" opacity="0.6"/><ellipse cx="72" cy="55" rx="10" ry="7" fill="#FF6B6B" opacity="0.6"/>` },
-  { id: "culpabilite", emoji: "😞", label: "Culpabilité", color: "#8090A0", bg: "#E8EEF5",
-    svg: `<circle cx="50" cy="50" r="45" fill="#8090A0" stroke="#607090" stroke-width="2"/><path d="M 28 42 Q 35 38 42 44" stroke="#2A2540" stroke-width="2.5" fill="none"/><path d="M 58 42 Q 65 38 72 44" stroke="#2A2540" stroke-width="2.5" fill="none"/><path d="M 35 66 Q 50 60 65 66" stroke="#2A2540" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M 42 20 Q 50 14 58 20 Q 50 30 42 20Z" fill="#E05A5A" opacity="0.7"/>` },
-  { id: "embarras", emoji: "😅", label: "Embarras", color: "#F4A0A0", bg: "#FDEAEA",
-    svg: `<circle cx="50" cy="50" r="45" fill="#F4A0A0" stroke="#D48080" stroke-width="2"/><circle cx="35" cy="40" r="6" fill="#2A2540"/><circle cx="65" cy="40" r="6" fill="#2A2540"/><circle cx="37" cy="38" r="2" fill="white"/><circle cx="67" cy="38" r="2" fill="white"/><path d="M 33 62 Q 50 70 67 62" stroke="#2A2540" stroke-width="2.5" fill="none" stroke-linecap="round"/><ellipse cx="20" cy="50" rx="12" ry="8" fill="#FF6B6B" opacity="0.5"/><ellipse cx="80" cy="50" rx="12" ry="8" fill="#FF6B6B" opacity="0.5"/><circle cx="72" cy="32" r="5" fill="#A8D4F0" opacity="0.8"/>` },
-  { id: "jalousie", emoji: "😒", label: "Jalousie", color: "#60A060", bg: "#E4F5E4",
-    svg: `<circle cx="50" cy="50" r="45" fill="#60A060" stroke="#408040" stroke-width="2"/><circle cx="35" cy="42" r="6" fill="#2A2540"/><circle cx="65" cy="42" r="6" fill="#2A2540"/><circle cx="37" cy="40" r="2" fill="white"/><circle cx="67" cy="40" r="2" fill="white"/><path d="M 35 63 Q 50 57 65 63" stroke="#2A2540" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M 28 30 Q 36 24 42 32" stroke="#2A2540" stroke-width="2" fill="none"/>` },
-  { id: "envie", emoji: "🫢", label: "Envie", color: "#A0C060", bg: "#F0F8E4",
-    svg: `<circle cx="50" cy="50" r="45" fill="#A0C060" stroke="#80A040" stroke-width="2"/><circle cx="35" cy="40" r="6" fill="#2A2540"/><circle cx="65" cy="40" r="6" fill="#2A2540"/><circle cx="37" cy="38" r="2" fill="white"/><circle cx="67" cy="38" r="2" fill="white"/><path d="M 33 62 Q 50 70 67 62" stroke="#2A2540" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M 68 22 Q 76 16 80 24" stroke="#FFD700" stroke-width="2" fill="none" stroke-linecap="round"/>` },
-  { id: "admiration", emoji: "🤩", label: "Admiration", color: "#FFB830", bg: "#FEF5E4",
-    svg: `<circle cx="50" cy="50" r="45" fill="#FFB830" stroke="#DD9810" stroke-width="2"/><path d="M 25 35 Q 35 25 45 35 Q 35 45 25 35Z" fill="#FFD700"/><path d="M 55 35 Q 65 25 75 35 Q 65 45 55 35Z" fill="#FFD700"/><path d="M 28 62 Q 50 76 72 62" stroke="#2A2540" stroke-width="3" fill="none" stroke-linecap="round"/>` },
-  { id: "soulagement", emoji: "😌", label: "Soulagement", color: "#90C890", bg: "#E8F8E8",
-    svg: `<circle cx="50" cy="50" r="45" fill="#90C890" stroke="#70A870" stroke-width="2"/><path d="M 28 42 Q 35 38 42 42" stroke="#2A2540" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M 58 42 Q 65 38 72 42" stroke="#2A2540" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M 30 60 Q 50 74 70 60" stroke="#2A2540" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M 30 22 Q 50 16 70 22" stroke="#70A870" stroke-width="2" fill="none" stroke-linecap="round"/>` },
-  { id: "espoir", emoji: "🌟", label: "Espoir", color: "#FFD700", bg: "#FEF9E4",
-    svg: `<circle cx="50" cy="50" r="45" fill="#FFD700" stroke="#F0B000" stroke-width="2"/><circle cx="35" cy="40" r="6" fill="#2A2540"/><circle cx="65" cy="40" r="6" fill="#2A2540"/><circle cx="37" cy="38" r="2" fill="white"/><circle cx="67" cy="38" r="2" fill="white"/><path d="M 30 60 Q 50 72 70 60" stroke="#2A2540" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M 50 5 L 52 15 L 60 12 L 54 20 L 60 26 L 50 22 L 40 26 L 46 20 L 40 12 L 48 15 Z" fill="#FFF" opacity="0.8"/>` },
-  { id: "desespoir", emoji: "😢", label: "Désespoir", color: "#5070A0", bg: "#E0E8F8",
-    svg: `<circle cx="50" cy="50" r="45" fill="#5070A0" stroke="#304080" stroke-width="2"/><path d="M 26 40 Q 35 33 42 40" stroke="#2A2540" stroke-width="2.5" fill="none"/><path d="M 58 40 Q 65 33 72 40" stroke="#2A2540" stroke-width="2.5" fill="none"/><path d="M 32 67 Q 50 58 68 67" stroke="#2A2540" stroke-width="3" fill="none" stroke-linecap="round"/><circle cx="35" cy="58" r="4" fill="#A8D4F0"/><circle cx="65" cy="60" r="4" fill="#A8D4F0"/><circle cx="32" cy="65" r="3" fill="#A8D4F0"/>` },
-  { id: "deception", emoji: "😟", label: "Déception", color: "#9090B0", bg: "#E8E8F8",
-    svg: `<circle cx="50" cy="50" r="45" fill="#9090B0" stroke="#7070A0" stroke-width="2"/><path d="M 28 40 Q 35 36 42 40" stroke="#2A2540" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M 58 40 Q 65 36 72 40" stroke="#2A2540" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M 33 66 Q 50 58 67 66" stroke="#2A2540" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M 28 32 Q 36 27 42 34" stroke="#2A2540" stroke-width="2" fill="none"/>` },
-  { id: "frustration", emoji: "😤", label: "Frustration", color: "#D4602A", bg: "#FAEAE0",
-    svg: `<circle cx="50" cy="50" r="45" fill="#D4602A" stroke="#B44010" stroke-width="2"/><circle cx="35" cy="43" r="6" fill="#2A2540"/><circle cx="65" cy="43" r="6" fill="#2A2540"/><path d="M 33 63 Q 50 56 67 63" stroke="#2A2540" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M 28 30 Q 36 25 42 32" stroke="#2A2540" stroke-width="2" fill="none"/><path d="M 72 30 Q 64 25 58 32" stroke="#2A2540" stroke-width="2" fill="none"/><path d="M 44 8 Q 50 4 56 8" stroke="#FF6B35" stroke-width="2" fill="none"/>` },
-  { id: "irritation", emoji: "😠", label: "Irritation", color: "#C05030", bg: "#FAE8E0",
-    svg: `<circle cx="50" cy="50" r="45" fill="#C05030" stroke="#A03010" stroke-width="2"/><circle cx="35" cy="44" r="6" fill="#2A2540"/><circle cx="65" cy="44" r="6" fill="#2A2540"/><path d="M 32 64 Q 50 57 68 64" stroke="#2A2540" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M 26 31 L 44 39" stroke="#2A2540" stroke-width="2.5" stroke-linecap="round"/><path d="M 74 31 L 56 39" stroke="#2A2540" stroke-width="2.5" stroke-linecap="round"/>` },
-  { id: "rage", emoji: "🤬", label: "Rage", color: "#A02020", bg: "#FAE0E0",
-    svg: `<circle cx="50" cy="50" r="45" fill="#A02020" stroke="#801010" stroke-width="2"/><circle cx="35" cy="46" r="6" fill="#2A2540"/><circle cx="65" cy="46" r="6" fill="#2A2540"/><path d="M 30 66 Q 50 57 70 66" stroke="#2A2540" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M 22 28 L 44 39" stroke="#FF4040" stroke-width="3" stroke-linecap="round"/><path d="M 78 28 L 56 39" stroke="#FF4040" stroke-width="3" stroke-linecap="round"/><path d="M 30 18 L 44 30" stroke="#FF6060" stroke-width="2" stroke-linecap="round"/><path d="M 70 18 L 56 30" stroke="#FF6060" stroke-width="2" stroke-linecap="round"/>` },
-  { id: "haine", emoji: "😈", label: "Haine", color: "#601030", bg: "#F0E0E5",
-    svg: `<circle cx="50" cy="50" r="45" fill="#601030" stroke="#401020" stroke-width="2"/><circle cx="35" cy="46" r="6" fill="#FF4040"/><circle cx="65" cy="46" r="6" fill="#FF4040"/><path d="M 32 66 Q 50 58 68 66" stroke="#FF8080" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M 22 26 L 44 38" stroke="#FF4040" stroke-width="3" stroke-linecap="round"/><path d="M 78 26 L 56 38" stroke="#FF4040" stroke-width="3" stroke-linecap="round"/>` },
-  { id: "anxiete", emoji: "😰", label: "Anxiété", color: "#A0C4A0", bg: "#E5FFE5",
-    svg: `<circle cx="50" cy="50" r="45" fill="#A0C4A0" stroke="#7BA87B" stroke-width="2"/><ellipse cx="35" cy="42" rx="7" ry="6" fill="#2A2540"/><ellipse cx="65" cy="42" rx="7" ry="6" fill="#2A2540"/><circle cx="37" cy="40" r="2" fill="white"/><circle cx="67" cy="40" r="2" fill="white"/><path d="M 35 63 Q 43 58 50 63 Q 57 68 65 63" stroke="#2A2540" stroke-width="2.5" fill="none" stroke-linecap="round"/><circle cx="72" cy="38" r="5" fill="#A8D4F0" opacity="0.7"/>` },
-  { id: "stress", emoji: "😫", label: "Stress", color: "#D4A060", bg: "#FAF0E0",
-    svg: `<circle cx="50" cy="50" r="45" fill="#D4A060" stroke="#B48040" stroke-width="2"/><circle cx="35" cy="43" r="6" fill="#2A2540"/><circle cx="65" cy="43" r="6" fill="#2A2540"/><path d="M 33 63 Q 50 56 67 63" stroke="#2A2540" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M 28 30 Q 36 25 42 32" stroke="#2A2540" stroke-width="2" fill="none"/><path d="M 72 30 Q 64 25 58 32" stroke="#2A2540" stroke-width="2" fill="none"/><text x="68" y="30" font-size="16" fill="#2A2540">!</text>` },
-  { id: "panique", emoji: "😱", label: "Panique", color: "#C060A0", bg: "#F8E8F5",
-    svg: `<circle cx="50" cy="50" r="45" fill="#C060A0" stroke="#A04080" stroke-width="2"/><ellipse cx="35" cy="42" rx="8" ry="9" fill="#2A2540"/><ellipse cx="65" cy="42" rx="8" ry="9" fill="#2A2540"/><circle cx="37" cy="39" r="3" fill="white"/><circle cx="67" cy="39" r="3" fill="white"/><ellipse cx="50" cy="65" rx="14" ry="10" fill="#2A2540"/><path d="M 28 30 Q 36 24 42 32" stroke="#2A2540" stroke-width="2" fill="none"/><path d="M 72 30 Q 64 24 58 32" stroke="#2A2540" stroke-width="2" fill="none"/>` },
-  { id: "inquietude", emoji: "😟", label: "Inquiétude", color: "#8090B0", bg: "#E8EEF8",
-    svg: `<circle cx="50" cy="50" r="45" fill="#8090B0" stroke="#607090" stroke-width="2"/><path d="M 28 42 Q 35 37 42 42" stroke="#2A2540" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M 58 42 Q 65 37 72 42" stroke="#2A2540" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M 34 64 Q 50 57 66 64" stroke="#2A2540" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M 42 22 Q 50 15 58 22" stroke="#2A2540" stroke-width="2" fill="none"/>` },
-  { id: "timidite", emoji: "🫣", label: "Timidité", color: "#F4B0B0", bg: "#FDEAEA",
-    svg: `<circle cx="50" cy="50" r="45" fill="#F4B0B0" stroke="#D49090" stroke-width="2"/><circle cx="35" cy="40" r="6" fill="#2A2540"/><circle cx="65" cy="40" r="6" fill="#2A2540"/><circle cx="37" cy="38" r="2" fill="white"/><circle cx="67" cy="38" r="2" fill="white"/><path d="M 35 64 Q 50 58 65 64" stroke="#2A2540" stroke-width="2.5" fill="none" stroke-linecap="round"/><ellipse cx="25" cy="54" rx="11" ry="8" fill="#FF9090" opacity="0.6"/><ellipse cx="75" cy="54" rx="11" ry="8" fill="#FF9090" opacity="0.6"/>` },
-  { id: "solitude", emoji: "😶", label: "Solitude", color: "#7080A0", bg: "#E5EAF5",
-    svg: `<circle cx="50" cy="50" r="45" fill="#7080A0" stroke="#506080" stroke-width="2"/><path d="M 28 42 Q 35 38 42 42" stroke="#2A2540" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M 58 42 Q 65 38 72 42" stroke="#2A2540" stroke-width="2.5" fill="none" stroke-linecap="round"/><line x1="35" y1="64" x2="65" y2="64" stroke="#2A2540" stroke-width="2.5" stroke-linecap="round"/><circle cx="20" cy="50" r="4" fill="#7080A0" opacity="0.4"/><circle cx="80" cy="50" r="4" fill="#7080A0" opacity="0.4"/>` },
-  { id: "nostalgie", emoji: "🥹", label: "Nostalgie", color: "#B0A0C0", bg: "#EDE8F8",
-    svg: `<circle cx="50" cy="50" r="45" fill="#B0A0C0" stroke="#9080B0" stroke-width="2"/><path d="M 28 42 Q 35 38 42 42" stroke="#2A2540" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M 58 42 Q 65 38 72 42" stroke="#2A2540" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M 32 62 Q 50 70 68 62" stroke="#2A2540" stroke-width="2.5" fill="none" stroke-linecap="round"/><circle cx="38" cy="55" r="3" fill="#A8D4F0" opacity="0.7"/><path d="M 70 18 Q 78 12 84 20" stroke="#B0A0C0" stroke-width="2" fill="none"/>` },
-  { id: "melancolie", emoji: "😪", label: "Mélancolie", color: "#6080A0", bg: "#E0E8F5",
-    svg: `<circle cx="50" cy="50" r="45" fill="#6080A0" stroke="#406080" stroke-width="2"/><path d="M 27 42 Q 35 37 43 42" stroke="#2A2540" stroke-width="2.5" fill="none"/><path d="M 57 42 Q 65 37 73 42" stroke="#2A2540" stroke-width="2.5" fill="none"/><path d="M 33 66 Q 50 60 67 66" stroke="#2A2540" stroke-width="2.5" fill="none" stroke-linecap="round"/><circle cx="37" cy="56" r="3" fill="#A8D4F0" opacity="0.7"/><path d="M 38 59 Q 36 65 35 70" stroke="#A8D4F0" stroke-width="1.5" fill="none"/>` },
-  { id: "ennui", emoji: "😑", label: "Ennui", color: "#A0A0A0", bg: "#F0F0F0",
-    svg: `<circle cx="50" cy="50" r="45" fill="#A0A0A0" stroke="#808080" stroke-width="2"/><path d="M 28 40 Q 35 36 42 40" stroke="#2A2540" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M 58 40 Q 65 36 72 40" stroke="#2A2540" stroke-width="2.5" fill="none" stroke-linecap="round"/><line x1="33" y1="63" x2="67" y2="63" stroke="#2A2540" stroke-width="2.5" stroke-linecap="round"/><text x="68" y="35" font-size="14" fill="#808080">z</text><text x="74" y="26" font-size="11" fill="#808080">z</text>` },
-  { id: "curiosite", emoji: "🧐", label: "Curiosité", color: "#60A0C0", bg: "#E0F0F8",
-    svg: `<circle cx="50" cy="50" r="45" fill="#60A0C0" stroke="#4080A0" stroke-width="2"/><circle cx="35" cy="40" r="6" fill="#2A2540"/><circle cx="65" cy="40" r="6" fill="#2A2540"/><circle cx="37" cy="38" r="2" fill="white"/><circle cx="67" cy="38" r="2" fill="white"/><path d="M 33 62 Q 50 70 67 62" stroke="#2A2540" stroke-width="2.5" fill="none" stroke-linecap="round"/><text x="63" y="32" font-size="20" fill="#2A2540">?</text>` },
-  { id: "emerveillement", emoji: "🤯", label: "Émerveillement", color: "#FFB0D0", bg: "#FDE8F5",
-    svg: `<circle cx="50" cy="50" r="45" fill="#FFB0D0" stroke="#DD90B0" stroke-width="2"/><circle cx="35" cy="40" r="7" fill="#2A2540"/><circle cx="65" cy="40" r="7" fill="#2A2540"/><circle cx="38" cy="37" r="3" fill="white"/><circle cx="68" cy="37" r="3" fill="white"/><path d="M 28 60 Q 50 75 72 60" stroke="#2A2540" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M 42 10 L 44 20" stroke="#FFD700" stroke-width="2"/><path d="M 50 8 L 50 18" stroke="#FFD700" stroke-width="2"/><path d="M 58 10 L 56 20" stroke="#FFD700" stroke-width="2"/><path d="M 35 14 L 40 22" stroke="#FFD700" stroke-width="2"/><path d="M 65 14 L 60 22" stroke="#FFD700" stroke-width="2"/>` },
-  { id: "excitation", emoji: "🤩", label: "Excitation", color: "#FF6080", bg: "#FDEAEE",
-    svg: `<circle cx="50" cy="50" r="45" fill="#FF6080" stroke="#DD4060" stroke-width="2"/><circle cx="35" cy="40" r="7" fill="#2A2540"/><circle cx="65" cy="40" r="7" fill="#2A2540"/><circle cx="38" cy="37" r="3" fill="white"/><circle cx="68" cy="37" r="3" fill="white"/><path d="M 26 60 Q 50 78 74 60" stroke="#2A2540" stroke-width="3" fill="#FFB0C0" stroke-linecap="round"/><path d="M 20 30 L 28 38" stroke="#FFD700" stroke-width="2.5" stroke-linecap="round"/><path d="M 80 30 L 72 38" stroke="#FFD700" stroke-width="2.5" stroke-linecap="round"/>` },
-  { id: "satisfaction", emoji: "😏", label: "Satisfaction", color: "#70B070", bg: "#E8F5E8",
-    svg: `<circle cx="50" cy="50" r="45" fill="#70B070" stroke="#508050" stroke-width="2"/><path d="M 28 40 Q 35 36 42 40" stroke="#2A2540" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M 58 40 Q 65 36 72 40" stroke="#2A2540" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M 32 60 Q 50 72 68 60" stroke="#2A2540" stroke-width="3" fill="none" stroke-linecap="round"/>` },
-  { id: "serenite", emoji: "😊", label: "Sérénité", color: "#90C8C8", bg: "#E8F8F8",
-    svg: `<circle cx="50" cy="50" r="45" fill="#90C8C8" stroke="#70A8A8" stroke-width="2"/><path d="M 27 42 Q 35 38 43 42" stroke="#2A2540" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M 57 42 Q 65 38 73 42" stroke="#2A2540" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M 30 60 Q 50 72 70 60" stroke="#2A2540" stroke-width="2.5" fill="none" stroke-linecap="round"/><ellipse cx="25" cy="56" rx="7" ry="5" fill="#FFB3C6" opacity="0.3"/><ellipse cx="75" cy="56" rx="7" ry="5" fill="#FFB3C6" opacity="0.3"/>` },
-  { id: "etonnement", emoji: "😲", label: "Étonnement", color: "#C0A040", bg: "#F8F0E0",
-    svg: `<circle cx="50" cy="50" r="45" fill="#C0A040" stroke="#A08020" stroke-width="2"/><ellipse cx="35" cy="40" rx="7" ry="8" fill="#2A2540"/><ellipse cx="65" cy="40" rx="7" ry="8" fill="#2A2540"/><circle cx="37" cy="38" r="2.5" fill="white"/><circle cx="67" cy="38" r="2.5" fill="white"/><ellipse cx="50" cy="64" rx="11" ry="9" fill="#2A2540"/>` },
-  { id: "confusion", emoji: "😕", label: "Confusion", color: "#C4AEE8", bg: "#EDE8F8",
-    svg: `<circle cx="50" cy="50" r="45" fill="#C4AEE8" stroke="#A490C8" stroke-width="2"/><circle cx="35" cy="42" r="6" fill="#2A2540"/><circle cx="65" cy="42" r="6" fill="#2A2540"/><circle cx="37" cy="40" r="2" fill="white"/><circle cx="67" cy="40" r="2" fill="white"/><path d="M 36 63 Q 43 60 50 65 Q 57 60 64 63" stroke="#2A2540" stroke-width="2.5" fill="none" stroke-linecap="round"/><text x="66" y="32" font-size="18" fill="#2A2540">?</text>` },
-  { id: "determination", emoji: "😤", label: "Détermination", color: "#2060A0", bg: "#E0EAF8",
-    svg: `<circle cx="50" cy="50" r="45" fill="#2060A0" stroke="#1040A0" stroke-width="2"/><circle cx="35" cy="40" r="6" fill="#2A2540"/><circle cx="65" cy="40" r="6" fill="#2A2540"/><circle cx="37" cy="38" r="2" fill="white"/><circle cx="67" cy="38" r="2" fill="white"/><path d="M 28 58 Q 50 68 72 58" stroke="white" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M 26 30 L 44 38" stroke="white" stroke-width="2.5" stroke-linecap="round"/><path d="M 74 30 L 56 38" stroke="white" stroke-width="2.5" stroke-linecap="round"/>` },
-  { id: "courage", emoji: "💪", label: "Courage", color: "#E08020", bg: "#FAF0E0",
-    svg: `<circle cx="50" cy="50" r="45" fill="#E08020" stroke="#C06000" stroke-width="2"/><circle cx="35" cy="40" r="6" fill="#2A2540"/><circle cx="65" cy="40" r="6" fill="#2A2540"/><circle cx="37" cy="38" r="2" fill="white"/><circle cx="67" cy="38" r="2" fill="white"/><path d="M 28 58 Q 50 70 72 58" stroke="#2A2540" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M 42 20 L 50 8 L 58 20 L 54 20 L 50 12 L 46 20 Z" fill="#FFD700"/>` },
-  { id: "resignation", emoji: "😮‍💨", label: "Résignation", color: "#9090A0", bg: "#EAEAF5",
-    svg: `<circle cx="50" cy="50" r="45" fill="#9090A0" stroke="#707090" stroke-width="2"/><path d="M 27 40 Q 35 36 43 40" stroke="#2A2540" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M 57 40 Q 65 36 73 40" stroke="#2A2540" stroke-width="2.5" fill="none" stroke-linecap="round"/><line x1="34" y1="63" x2="66" y2="63" stroke="#2A2540" stroke-width="2.5" stroke-linecap="round"/><path d="M 30 72 Q 50 78 70 72" stroke="#9090A0" stroke-width="2" fill="none" stroke-linecap="round"/>` },
-  { id: "decouragement", emoji: "😞", label: "Découragement", color: "#7070A0", bg: "#E8E8F8",
-    svg: `<circle cx="50" cy="50" r="45" fill="#7070A0" stroke="#505090" stroke-width="2"/><path d="M 26 40 Q 35 34 44 40" stroke="#2A2540" stroke-width="2.5" fill="none"/><path d="M 56 40 Q 65 34 74 40" stroke="#2A2540" stroke-width="2.5" fill="none"/><path d="M 32 67 Q 50 59 68 67" stroke="#2A2540" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M 38 22 Q 50 16 62 22" stroke="#7070A0" stroke-width="2" fill="none" stroke-dasharray="3,3"/>` },
-  { id: "optimisme", emoji: "😄", label: "Optimisme", color: "#60C060", bg: "#E8F8E8",
-    svg: `<circle cx="50" cy="50" r="45" fill="#60C060" stroke="#40A040" stroke-width="2"/><circle cx="35" cy="40" r="6" fill="#2A2540"/><circle cx="65" cy="40" r="6" fill="#2A2540"/><circle cx="37" cy="38" r="2" fill="white"/><circle cx="67" cy="38" r="2" fill="white"/><path d="M 27 59 Q 50 76 73 59" stroke="#2A2540" stroke-width="3" fill="#A0E8A0" stroke-linecap="round"/><path d="M 42 15 L 50 5 L 58 15" stroke="#FFD700" stroke-width="2.5" fill="none" stroke-linecap="round"/>` },
-  { id: "pessimisme", emoji: "😒", label: "Pessimisme", color: "#607090", bg: "#E8EAF5",
-    svg: `<circle cx="50" cy="50" r="45" fill="#607090" stroke="#405070" stroke-width="2"/><path d="M 28 42 Q 35 37 42 42" stroke="#2A2540" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M 58 42 Q 65 37 72 42" stroke="#2A2540" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M 33 67 Q 50 59 67 67" stroke="#2A2540" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M 38 24 Q 50 18 62 24" stroke="#607090" stroke-width="2" fill="none" stroke-dasharray="4,3"/>` },
+  { id: "joyeux", emoji: "😊", label: "Joyeux·se", color: "#FFD700", bg: "#FEF9E4",
+    svg: `<circle cx="50" cy="50" r="45" fill="#FFD700" stroke="#F0A500" stroke-width="2"/>
+          <circle cx="35" cy="40" r="6" fill="#2A2540"/>
+          <circle cx="65" cy="40" r="6" fill="#2A2540"/>
+          <circle cx="37" cy="38" r="2" fill="white"/>
+          <circle cx="67" cy="38" r="2" fill="white"/>
+          <path d="M 30 60 Q 50 78 70 60" stroke="#2A2540" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <ellipse cx="25" cy="58" rx="8" ry="5" fill="#FFB3C6" opacity="0.5"/>
+          <ellipse cx="75" cy="58" rx="8" ry="5" fill="#FFB3C6" opacity="0.5"/>` },
+  { id: "triste", emoji: "😔", label: "Triste", color: "#7EB8D4", bg: "#E5F0FF",
+    svg: `<circle cx="50" cy="50" r="45" fill="#7EB8D4" stroke="#5A9AC0" stroke-width="2"/>
+          <circle cx="35" cy="42" r="6" fill="#2A2540"/>
+          <circle cx="65" cy="42" r="6" fill="#2A2540"/>
+          <circle cx="37" cy="40" r="2" fill="white"/>
+          <circle cx="67" cy="40" r="2" fill="white"/>
+          <path d="M 30 65 Q 50 55 70 65" stroke="#2A2540" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <path d="M 28 35 Q 35 30 40 38" stroke="#2A2540" stroke-width="2" fill="none"/>
+          <path d="M 72 35 Q 65 30 60 38" stroke="#2A2540" stroke-width="2" fill="none"/>
+          <circle cx="38" cy="55" r="3" fill="#A8D4F0" opacity="0.8"/>
+          <circle cx="62" cy="57" r="3" fill="#A8D4F0" opacity="0.8"/>` },
+  { id: "anxieux", emoji: "😰", label: "Anxieux·se", color: "#A0C4A0", bg: "#E5FFE5",
+    svg: `<circle cx="50" cy="50" r="45" fill="#A0C4A0" stroke="#7BA87B" stroke-width="2"/>
+          <ellipse cx="35" cy="42" rx="7" ry="6" fill="#2A2540"/>
+          <ellipse cx="65" cy="42" rx="7" ry="6" fill="#2A2540"/>
+          <circle cx="37" cy="40" r="2" fill="white"/>
+          <circle cx="67" cy="40" r="2" fill="white"/>
+          <path d="M 35 63 Q 43 58 50 63 Q 57 68 65 63" stroke="#2A2540" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <path d="M 28 32 Q 36 27 40 35" stroke="#2A2540" stroke-width="2" fill="none"/>
+          <path d="M 72 32 Q 64 27 60 35" stroke="#2A2540" stroke-width="2" fill="none"/>
+          <circle cx="72" cy="38" r="5" fill="#A8D4F0" opacity="0.7"/>` },
+  { id: "colere", emoji: "😡", label: "En colère", color: "#E07070", bg: "#FEE2E2",
+    svg: `<circle cx="50" cy="50" r="45" fill="#E07070" stroke="#C05050" stroke-width="2"/>
+          <circle cx="35" cy="45" r="6" fill="#2A2540"/>
+          <circle cx="65" cy="45" r="6" fill="#2A2540"/>
+          <circle cx="37" cy="43" r="2" fill="white"/>
+          <circle cx="67" cy="43" r="2" fill="white"/>
+          <path d="M 30 63 Q 50 55 70 63" stroke="#2A2540" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <path d="M 25 30 L 45 38" stroke="#2A2540" stroke-width="3" stroke-linecap="round"/>
+          <path d="M 75 30 L 55 38" stroke="#2A2540" stroke-width="3" stroke-linecap="round"/>
+          <path d="M 30 22 L 42 34" stroke="#FF6B35" stroke-width="2" stroke-linecap="round"/>
+          <path d="M 70 22 L 58 34" stroke="#FF6B35" stroke-width="2" stroke-linecap="round"/>` },
+  { id: "calme", emoji: "😌", label: "Calme", color: "#B0A0D0", bg: "#EDE8F8",
+    svg: `<circle cx="50" cy="50" r="45" fill="#B0A0D0" stroke="#9080C0" stroke-width="2"/>
+          <path d="M 28 42 Q 35 38 42 42" stroke="#2A2540" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <path d="M 58 42 Q 65 38 72 42" stroke="#2A2540" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <path d="M 33 60 Q 50 70 67 60" stroke="#2A2540" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <ellipse cx="25" cy="56" rx="7" ry="5" fill="#FFB3C6" opacity="0.4"/>
+          <ellipse cx="75" cy="56" rx="7" ry="5" fill="#FFB3C6" opacity="0.4"/>` },
+  { id: "fatigue", emoji: "😴", label: "Fatigué·e", color: "#9090B0", bg: "#E8E8F8",
+    svg: `<circle cx="50" cy="50" r="45" fill="#9090B0" stroke="#7070A0" stroke-width="2"/>
+          <path d="M 28 44 Q 35 40 42 44" stroke="#2A2540" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <path d="M 58 44 Q 65 40 72 44" stroke="#2A2540" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <path d="M 35 62 Q 50 68 65 62" stroke="#2A2540" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <text x="68" y="30" font-size="18" fill="#FFD700">z</text>
+          <text x="75" y="20" font-size="14" fill="#FFD700">z</text>
+          <text x="80" y="12" font-size="10" fill="#FFD700">z</text>` },
+  { id: "heureux", emoji: "🥰", label: "Aimé·e", color: "#E891B0", bg: "#FDEAF2",
+    svg: `<circle cx="50" cy="50" r="45" fill="#E891B0" stroke="#D06090" stroke-width="2"/>
+          <circle cx="35" cy="40" r="6" fill="#2A2540"/>
+          <circle cx="65" cy="40" r="6" fill="#2A2540"/>
+          <circle cx="37" cy="38" r="2" fill="white"/>
+          <circle cx="67" cy="38" r="2" fill="white"/>
+          <path d="M 28 58 Q 50 75 72 58" stroke="#2A2540" stroke-width="3" fill="#FFB3C6" stroke-linecap="round"/>
+          <path d="M 20 25 Q 25 18 30 25 Q 25 32 20 25 Z" fill="#E05A5A"/>
+          <path d="M 32 18 Q 37 11 42 18 Q 37 25 32 18 Z" fill="#E05A5A"/>
+          <path d="M 58 18 Q 63 11 68 18 Q 63 25 58 18 Z" fill="#E05A5A"/>
+          <path d="M 70 25 Q 75 18 80 25 Q 75 32 70 25 Z" fill="#E05A5A"/>` },
+  { id: "stresse", emoji: "😤", label: "Stressé·e", color: "#F4A261", bg: "#FEF0E4",
+    svg: `<circle cx="50" cy="50" r="45" fill="#F4A261" stroke="#D4824A" stroke-width="2"/>
+          <circle cx="35" cy="43" r="6" fill="#2A2540"/>
+          <circle cx="65" cy="43" r="6" fill="#2A2540"/>
+          <circle cx="37" cy="41" r="2" fill="white"/>
+          <circle cx="67" cy="41" r="2" fill="white"/>
+          <path d="M 33 62 Q 50 55 67 62" stroke="#2A2540" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <path d="M 28 30 Q 36 25 42 32" stroke="#2A2540" stroke-width="2" fill="none"/>
+          <path d="M 72 30 Q 64 25 58 32" stroke="#2A2540" stroke-width="2" fill="none"/>
+          <path d="M 44 10 Q 50 5 56 10" stroke="#E05A5A" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <path d="M 47 5 Q 50 2 53 5" stroke="#E05A5A" stroke-width="1.5" fill="none" stroke-linecap="round"/>` },
+  { id: "confus", emoji: "😕", label: "Confus·e", color: "#C4AEE8", bg: "#EDE8F8",
+    svg: `<circle cx="50" cy="50" r="45" fill="#C4AEE8" stroke="#A090D0" stroke-width="2"/>
+          <circle cx="35" cy="42" r="6" fill="#2A2540"/>
+          <circle cx="65" cy="42" r="6" fill="#2A2540"/>
+          <circle cx="37" cy="40" r="2" fill="white"/>
+          <circle cx="67" cy="40" r="2" fill="white"/>
+          <path d="M 36 63 Q 43 60 50 65 Q 57 60 64 63" stroke="#2A2540" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <path d="M 28 33 Q 36 28 43 35" stroke="#2A2540" stroke-width="2" fill="none"/>
+          <text x="68" y="35" font-size="16" fill="#2A2540">?</text>` },
+  { id: "reconnaissant", emoji: "🤗", label: "Reconnaissant·e", color: "#7BBF9A", bg: "#E4F5EC",
+    svg: `<circle cx="50" cy="50" r="45" fill="#7BBF9A" stroke="#5AA882" stroke-width="2"/>
+          <circle cx="35" cy="40" r="6" fill="#2A2540"/>
+          <circle cx="65" cy="40" r="6" fill="#2A2540"/>
+          <circle cx="37" cy="38" r="2" fill="white"/>
+          <circle cx="67" cy="38" r="2" fill="white"/>
+          <path d="M 28 60 Q 50 76 72 60" stroke="#2A2540" stroke-width="3" fill="#A8E4C0" stroke-linecap="round"/>
+          <path d="M 15 50 Q 20 42 28 48" stroke="#5AA882" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <path d="M 85 50 Q 80 42 72 48" stroke="#5AA882" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <ellipse cx="25" cy="56" rx="8" ry="5" fill="#FFB3C6" opacity="0.5"/>
+          <ellipse cx="75" cy="56" rx="8" ry="5" fill="#FFB3C6" opacity="0.5"/>` },
 ];
-
 
 function AvatarEmotion({ avatar, size = 80 }) {
   const av = EMOTION_AVATARS.find(a => a.id === avatar) || EMOTION_AVATARS[0];
@@ -616,10 +460,7 @@ function HomeScreen({ setScreen, quests, coins, user, currentAvatar, setCurrentA
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <div>
             <div style={{ color: "rgba(255,255,255,0.8)", fontSize: 12, fontWeight: 600 }}>MES PSYCHOCOINS</div>
-            <div style={{ color: "#fff", fontSize: 28, fontWeight: 800, display: "flex", alignItems: "center", gap: 8 }}>
-              <PsychoCoin size={32} />
-              {coins}
-            </div>
+            <div style={{ color: "#fff", fontSize: 28, fontWeight: 800, display: "flex", alignItems: "center", gap: 8 }}><PsychoCoin size={32} />{coins}</div>
           </div>
           <div style={{ textAlign: "right" }}>
             <div style={{ color: "rgba(255,255,255,0.8)", fontSize: 12 }}>Quêtes du jour</div>
@@ -631,9 +472,7 @@ function HomeScreen({ setScreen, quests, coins, user, currentAvatar, setCurrentA
       {/* Urgence */}
       <Card style={{ background: "#FFF0F0", border: `1px solid ${C.urgent}33`, marginBottom: 16 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-          <div style={{ width: 36, height: 36, borderRadius: "50%", background: "#E05A5A", display: "flex", alignItems: "center", justifyContent: "center" }}>
-            <Icon name="sos" size={20} color="#fff" />
-          </div>
+          <span style={{ fontSize: 28 }}>🆘</span>
           <div style={{ flex: 1 }}>
             <div style={{ fontWeight: 700, color: C.urgent, fontSize: 15 }}>3114 — Prévention suicide</div>
             <div style={{ fontSize: 12, color: C.muted }}>Gratuit · 24h/24 · Confidentiel</div>
@@ -644,75 +483,29 @@ function HomeScreen({ setScreen, quests, coins, user, currentAvatar, setCurrentA
 
       {/* Nav grid */}
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 20 }}>
-        <Card onClick={() => setScreen(S.GAME)} style={{ borderTop: `3px solid ${C.purple}`, padding: "14px 12px", textAlign: "center", cursor: "pointer" }}>
-          <div style={{ display: "flex", justifyContent: "center", marginBottom: 6 }}>
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={C.purple} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
-          </div>
-          <div style={{ fontWeight: 700, fontSize: 13, color: C.text }}>Activités</div>
-          <div style={{ fontSize: 11, color: C.muted, marginTop: 2 }}>Exercices & jeux</div>
-        </Card>
-        <Card onClick={() => setScreen(S.QUESTS)} style={{ borderTop: `3px solid ${C.green}`, padding: "14px 12px", textAlign: "center", cursor: "pointer" }}>
-          <div style={{ display: "flex", justifyContent: "center", marginBottom: 6 }}>
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={C.green} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
-          </div>
-          <div style={{ fontWeight: 700, fontSize: 13, color: C.text }}>Quêtes</div>
-          <div style={{ fontSize: 11, color: C.muted, marginTop: 2 }}>{done}/{quests.length} aujourd'hui</div>
-        </Card>
-        <Card onClick={() => setScreen(S.CHAT)} style={{ borderTop: `3px solid ${C.orange}`, padding: "14px 12px", textAlign: "center", cursor: "pointer" }}>
-          <div style={{ display: "flex", justifyContent: "center", marginBottom: 6 }}>
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={C.orange} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
-          </div>
-          <div style={{ fontWeight: 700, fontSize: 13, color: C.text }}>Parler</div>
-          <div style={{ fontSize: 11, color: C.muted, marginTop: 2 }}>Soignants & pairs</div>
-        </Card>
-        <Card onClick={() => setScreen(S.RESOURCES)} style={{ borderTop: `3px solid ${C.pink}`, padding: "14px 12px", textAlign: "center", cursor: "pointer" }}>
-          <div style={{ display: "flex", justifyContent: "center", marginBottom: 6 }}>
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={C.pink} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/><line x1="10" y1="8" x2="16" y2="8"/><line x1="10" y1="12" x2="16" y2="12"/></svg>
-          </div>
-          <div style={{ fontWeight: 700, fontSize: 13, color: C.text }}>Ressources</div>
-          <div style={{ fontSize: 11, color: C.muted, marginTop: 2 }}>Fiches & guides</div>
-        </Card>
-        <Card onClick={() => setScreen(S.COMMUNAUTE)} style={{ borderTop: `3px solid ${C.purple}`, padding: "14px 12px", textAlign: "center", cursor: "pointer" }}>
-          <div style={{ display: "flex", justifyContent: "center", marginBottom: 6 }}>
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={C.purple} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
-          </div>
-          <div style={{ fontWeight: 700, fontSize: 13, color: C.text }}>Communauté</div>
-          <div style={{ fontSize: 11, color: C.muted, marginTop: 2 }}>Espace d'échange</div>
-        </Card>
-        <Card onClick={() => setScreen(S.HUMEUR)} style={{ borderTop: `3px solid ${C.green}`, padding: "14px 12px", textAlign: "center", cursor: "pointer" }}>
-          <div style={{ display: "flex", justifyContent: "center", marginBottom: 6 }}>
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={C.green} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-          </div>
-          <div style={{ fontWeight: 700, fontSize: 13, color: C.text }}>Mon humeur</div>
-          <div style={{ fontSize: 11, color: C.muted, marginTop: 2 }}>Suivi émotionnel</div>
-        </Card>
-        <Card onClick={() => setScreen(S.URGENCES)} style={{ borderTop: "3px solid #E05A5A", padding: "14px 12px", textAlign: "center", cursor: "pointer" }}>
-          <div style={{ display: "flex", justifyContent: "center", marginBottom: 6 }}>
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#E05A5A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.68A2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z"/></svg>
-          </div>
-          <div style={{ fontWeight: 700, fontSize: 13, color: C.text }}>Urgences</div>
-          <div style={{ fontSize: 11, color: C.muted, marginTop: 2 }}>Contacts & structures</div>
-        </Card>
-        <Card onClick={() => setScreen(S.RAPPELS)} style={{ borderTop: `3px solid ${C.orange}`, padding: "14px 12px", textAlign: "center", cursor: "pointer" }}>
-          <div style={{ display: "flex", justifyContent: "center", marginBottom: 6 }}>
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={C.orange} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
-          </div>
-          <div style={{ fontWeight: 700, fontSize: 13, color: C.text }}>Rappels</div>
-          <div style={{ fontSize: 11, color: C.muted, marginTop: 2 }}>Doux et sans pression</div>
-        </Card>
+        {[
+          { icon: "🎮", label: "Activités", sub: "Exercices & jeux", s: S.GAME, color: C.purple },
+          { icon: "🗺️", label: "Quêtes", sub: `${done}/${quests.length} aujourd'hui`, s: S.QUESTS, color: C.green },
+          { icon: "💬", label: "Parler", sub: "Soignants & pairs", s: S.CHAT, color: C.orange },
+          { icon: "📚", label: "Ressources", sub: "Fiches & guides", s: S.RESOURCES, color: C.pink },
+        ].map(item => (
+          <Card key={item.s} onClick={() => setScreen(item.s)} style={{ borderTop: `3px solid ${item.color}`, padding: "14px 12px", textAlign: "center" }}>
+            <div style={{ fontSize: 28 }}>{item.icon}</div>
+            <div style={{ fontWeight: 700, fontSize: 14, color: C.text, marginTop: 4 }}>{item.label}</div>
+            <div style={{ fontSize: 11, color: C.muted, marginTop: 2 }}>{item.sub}</div>
+          </Card>
+        ))}
       </div>
 
       {/* Lives */}
       <div style={{ marginBottom: 20 }}>
         <Card onClick={() => setScreen(S.LIVE)} style={{ display: "flex", alignItems: "center", gap: 14 }}>
-          <div style={{ width: 46, height: 46, borderRadius: 14, background: C.purplePale, display: "flex", alignItems: "center", justifyContent: "center" }}>
-            <Icon name="live" size={24} color={C.purple} />
-          </div>
+          <div style={{ fontSize: 32 }}>🎙️</div>
           <div>
             <div style={{ fontWeight: 700, fontSize: 14, color: C.text }}>Lives avec des professionnels</div>
             <div style={{ fontSize: 12, color: C.muted }}>2 à 3 par semaine</div>
           </div>
-          <span style={{ marginLeft: "auto" }}><Icon name="arrow" size={16} color={C.purple} /></span>
+          <span style={{ marginLeft: "auto", color: C.purple }}>→</span>
         </Card>
       </div>
 
@@ -767,7 +560,7 @@ function QuestsScreen({ onBack, quests, setQuests, addCoins, mode }) {
             <span style={{ fontSize: 26 }}>{q.icon}</span>
             <div style={{ flex: 1 }}>
               <div style={{ fontWeight: 600, color: C.text, fontSize: 14, textDecoration: q.done ? "line-through" : "none" }}>{q.label}</div>
-              <div style={{ fontSize: 12, color: C.muted }}>+{q.coins} PC</div>
+              <div style={{ fontSize: 12, color: C.muted }}>+{q.coins} PsychoCoins</div>
             </div>
             <div style={{ width: 28, height: 28, borderRadius: "50%", background: q.done ? C.green : C.border, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 14 }}>
               {q.done ? "✓" : ""}
@@ -787,11 +580,11 @@ function QuestsScreen({ onBack, quests, setQuests, addCoins, mode }) {
 
 function GameScreen({ onBack, setScreen }) {
   const games = [
-    { icon: "breathe", title: "Respiration guidée", desc: "Technique 4-4-6 pour calmer l'anxiété", s: S.BREATHE, color: C.purple, ready: true },
-    { icon: "scan", title: "Scan corporel", desc: "Reconnecte-toi à ton corps", s: S.SCAN, color: C.green, ready: true },
-    { icon: "journal", title: "Journal des émotions", desc: "Pose tes pensées, observe tes humeurs", s: S.JOURNAL, color: C.orange, ready: true },
-    { icon: "gratitude", title: "Gratitude du jour", desc: "3 choses positives d'aujourd'hui", s: S.GRATITUDE, color: C.yellow, ready: true },
-    { icon: "cognitive", title: "Défis cognitifs doux", desc: "Stimule ton esprit en douceur", s: S.COGNITIF, color: C.pink, ready: true },
+    { icon: "🌬️", title: "Respiration guidée", desc: "Technique 4-4-6 pour calmer l'anxiété", s: S.BREATHE, color: C.purple, ready: true },
+    { icon: "🌿", title: "Scan corporel", desc: "Reconnecte-toi à ton corps", s: S.SCAN, color: C.green, ready: true },
+    { icon: "📓", title: "Journal des émotions", desc: "Pose tes pensées, observe tes humeurs", s: S.JOURNAL, color: C.orange, ready: true },
+    { icon: "🌟", title: "Gratitude du jour", desc: "3 choses positives d'aujourd'hui", s: S.GRATITUDE, color: C.yellow, ready: true },
+    { icon: "🧩", title: "Défis cognitifs doux", desc: "Stimule ton esprit en douceur", s: S.COGNITIF, color: C.pink, ready: true },
   ];
   return (
     <div style={{ padding: "20px 16px" }}>
@@ -801,14 +594,14 @@ function GameScreen({ onBack, setScreen }) {
       <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
         {games.map(g => (
           <Card key={g.title} onClick={() => g.ready && g.s && setScreen(g.s)} style={{ display: "flex", alignItems: "center", gap: 14, opacity: g.ready ? 1 : 0.65 }}>
-            <div style={{ width: 52, height: 52, borderRadius: 16, background: `${g.color}22`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-              <Icon name={g.icon} size={26} color={g.color} />
+            <div style={{ width: 52, height: 52, borderRadius: 16, background: `${g.color}22`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 26, flexShrink: 0 }}>
+              {g.icon}
             </div>
             <div style={{ flex: 1 }}>
               <div style={{ fontWeight: 700, color: C.text }}>{g.title}</div>
               <div style={{ fontSize: 13, color: C.muted }}>{g.desc}</div>
             </div>
-            {g.ready ? <Icon name="arrow" size={18} color={C.purple} /> : <Tag label="Bientôt" color={C.muted} bg={C.border} />}
+            {g.ready ? <span style={{ color: C.purple, fontSize: 18 }}>→</span> : <Tag label="Bientôt" color={C.muted} bg={C.border} />}
           </Card>
         ))}
       </div>
@@ -1178,7 +971,7 @@ function CognitifScreen({ onBack, addCoins }) {
             <div style={{ fontWeight: 700, color: C.text }}>{d.title}</div>
             <div style={{ fontSize: 13, color: C.muted }}>{d.desc}</div>
           </div>
-          <Icon name="arrow" size={16} color={C.purple} />
+          <span style={{ color: C.purple }}>→</span>
         </Card>
       ))}
     </div>
@@ -2069,14 +1862,9 @@ function ChatRoomScreen({ onBack, contact, user }) {
       </div>
       <div style={{ padding: "12px 16px", borderTop: `1px solid ${C.border}`, display: "flex", gap: 8, background: C.bgCard }}>
         <input value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => e.key === "Enter" && send()} placeholder="Écrivez votre message…" style={{ flex: 1, padding: "10px 16px", borderRadius: 24, border: `1px solid ${C.border}`, outline: "none", fontSize: 14, background: C.bg }} />
-        <button onClick={send} disabled={sending} style={{
-          width: 44, height: 44, borderRadius: "50%", border: "none",
-          background: sending ? C.muted : C.purple, cursor: sending ? "default" : "pointer",
-          display: "flex", alignItems: "center", justifyContent: "center",
-          boxShadow: sending ? "none" : `0 2px 8px ${C.purple}44`, flexShrink: 0
-        }}>
-          <Icon name="send" size={18} color="#fff" />
-        </button>
+        <Btn onClick={send} color={sending ? C.muted : C.purple} style={{ padding: "10px 18px", borderRadius: 24, margin: 0 }}>
+          {sending ? "..." : "↑"}
+        </Btn>
       </div>
     </div>
   );
@@ -2139,7 +1927,7 @@ function ResourcesScreen({ onBack, setScreen, setFiche }) {
                 <div style={{ fontWeight: 700, color: C.text }}>{f.title}</div>
                 <div style={{ fontSize: 13, color: C.muted }}>{f.symptomes.slice(0, 2).join(" · ")}</div>
               </div>
-              <span style={{ marginLeft: "auto" }}><Icon name="arrow" size={16} color={C.purple} /></span>
+              <span style={{ marginLeft: "auto", color: C.purple }}>→</span>
             </Card>
           ))}
         </div>
@@ -2172,22 +1960,12 @@ function ResourcesScreen({ onBack, setScreen, setFiche }) {
             <div style={{ color: C.muted, fontSize: 13 }}>Gratuit · 24h/24 · 7j/7 · Confidentiel</div>
             <Btn color={C.urgent} small style={{ marginTop: 10 }}>Appeler maintenant</Btn>
           </Card>
-          {URGENCES_DATA.map((u, i) => (
-            <Card key={i} style={{ background: u.bg, border: `1px solid ${u.color}33` }}>
-              <div style={{ display: "flex", alignItems: "flex-start", gap: 12 }}>
-                <span style={{ fontSize: 24, flexShrink: 0 }}>{u.emoji}</span>
-                <div style={{ flex: 1 }}>
-                  <div style={{ fontWeight: 700, color: C.text, fontSize: 13 }}>{u.nom}</div>
-                  {u.ville && <div style={{ fontSize: 12, color: C.muted }}>📍 {u.ville}</div>}
-                  <div style={{ fontSize: 12, color: C.muted }}>📞 {u.tel}</div>
-                  <div style={{ fontSize: 12, color: C.green, fontWeight: 600 }}>⏰ {u.ouvert}</div>
-                  {u.region && <div style={{ fontSize: 11, color: C.purple, fontWeight: 600 }}>🗺 {u.region}</div>}
-                </div>
-                <a href={"tel:" + u.tel} style={{ textDecoration: "none", flexShrink: 0 }}>
-                  <div style={{ background: u.color, color: "#fff", borderRadius: 10,
-                    padding: "5px 10px", fontSize: 11, fontWeight: 700 }}>📞</div>
-                </a>
-              </div>
+          {URGENCES.map((u, i) => (
+            <Card key={i}>
+              <div style={{ fontWeight: 700, color: C.text }}>{u.nom}</div>
+              <div style={{ fontSize: 13, color: C.muted }}>📍 {u.ville}</div>
+              <div style={{ fontSize: 13, color: C.muted }}>📞 {u.tel}</div>
+              <div style={{ fontSize: 13, color: C.green, fontWeight: 600 }}>⏰ {u.ouvert}</div>
             </Card>
           ))}
         </div>
@@ -2248,37 +2026,131 @@ function FicheScreen({ onBack, fiche }) {
 
 function ProfileScreen({ onBack, coins, quests, mode, setMode, user, onLogout }) {
   const done = quests.filter(q => q.done).length;
-  const modes = ["Mode libre", "Mode accompagné", "Mode engagement"];
+  const [tab, setTab] = useState("profil");
+
+  const PROFIL_LABELS = {
+    souffrance: "Personne en souffrance",
+    proche: "Proche d'une personne en souffrance",
+    ami: "Ami·e qui vient soutenir",
+    specialiste: "Professionnel de santé mentale",
+    visiteur: "Visiteur·trice",
+    modo: "Modérateur·trice",
+  };
+  const PROFIL_COLORS = {
+    souffrance: C.purple, proche: C.green, ami: C.orange,
+    specialiste: C.pink, visiteur: "#7090B0", modo: "#2060A0",
+  };
+  const profilColor = PROFIL_COLORS[user?.profil] || C.purple;
+
   return (
     <div style={{ padding: "20px 16px" }}>
       <BackBtn onBack={onBack} />
-      <div style={{ fontSize: 22, fontWeight: 800, color: C.text, marginBottom: 20 }}>Mon profil</div>
-      <Card style={{ textAlign: "center", padding: 24, marginBottom: 16, background: `linear-gradient(135deg, ${C.purplePale}, ${C.greenPale})`, border: "none" }}>
-        <div style={{ fontSize: 64 }}>🌸</div>
-        <div style={{ fontWeight: 800, color: C.text, marginTop: 8, fontSize: 18 }}>{coins} PsychoCoins</div>
-        <div style={{ color: C.muted, fontSize: 13 }}>{done} quêtes complétées aujourd'hui</div>
+
+      {/* Header */}
+      <Card style={{ textAlign: "center", padding: 24, marginBottom: 16, background: `linear-gradient(135deg, ${profilColor}22, ${C.greenPale})`, border: "none" }}>
+        <AvatarEmotion avatar="joie" size={60} />
+        <div style={{ fontWeight: 800, color: C.text, marginTop: 10, fontSize: 18 }}>{user?.prenom} {user?.nom}</div>
+        <div style={{ fontSize: 13, color: profilColor, fontWeight: 700, marginTop: 4 }}>
+          {PROFIL_LABELS[user?.profil] || "Utilisateur·trice"}
+        </div>
+        <div style={{ display: "flex", justifyContent: "center", gap: 24, marginTop: 14 }}>
+          <div style={{ textAlign: "center" }}>
+            <div style={{ fontWeight: 800, color: C.purple, fontSize: 20 }}>{coins}</div>
+            <div style={{ fontSize: 11, color: C.muted }}>PsychoCoins</div>
+          </div>
+          <div style={{ width: 1, background: C.border }} />
+          <div style={{ textAlign: "center" }}>
+            <div style={{ fontWeight: 800, color: C.green, fontSize: 20 }}>{done}</div>
+            <div style={{ fontSize: 11, color: C.muted }}>Quêtes aujourd'hui</div>
+          </div>
+        </div>
       </Card>
 
-      <Card style={{ marginBottom: 16 }}>
-        <div style={{ fontWeight: 700, color: C.text, marginBottom: 12 }}>Niveau d'implication</div>
-        <div style={{ fontSize: 13, color: C.muted, marginBottom: 10 }}>Ce choix t'appartient. Tu peux changer quand tu veux.</div>
-        {modes.map(m => (
-          <button key={m} onClick={() => setMode(m)} style={{ width: "100%", padding: "10px 14px", borderRadius: 12, border: `2px solid ${mode === m ? C.purple : C.border}`, background: mode === m ? C.purplePale : C.bgCard, color: C.text, fontWeight: mode === m ? 700 : 400, fontSize: 14, cursor: "pointer", marginBottom: 8, textAlign: "left" }}>
-            {mode === m ? "✓ " : ""}{m}
-            <div style={{ fontSize: 12, color: C.muted, fontWeight: 400 }}>
-              {m === "Mode libre" && "Aucune preuve demandée"}
-              {m === "Mode accompagné" && "Rappels doux, plus de présence"}
-              {m === "Mode engagement" && "Valide certaines quêtes par photo"}
-            </div>
-          </button>
+      {/* Tabs */}
+      <div style={{ display: "flex", gap: 8, marginBottom: 16 }}>
+        {[{id:"profil",label:"Mon profil"},{id:"infos",label:"Mes informations"},{id:"compte",label:"Compte"}].map(t => (
+          <button key={t.id} onClick={() => setTab(t.id)} style={{
+            flex: 1, padding: "8px 4px", borderRadius: 20, border: "none",
+            background: tab === t.id ? C.purple : C.border,
+            color: tab === t.id ? "#fff" : C.muted,
+            fontWeight: 700, fontSize: 11, cursor: "pointer"
+          }}>{t.label}</button>
         ))}
-      </Card>
+      </div>
 
-      <Card style={{ background: C.purplePale, border: "none" }}>
-        <p style={{ margin: 0, fontSize: 13, color: C.text, lineHeight: 1.7 }}>
-          🔒 <strong>Tes données t'appartiennent.</strong> Heidi respecte le RGPD. Aucune donnée de santé n'est vendue ni partagée sans ton consentement.
-        </p>
-      </Card>
+      {/* Tab Profil */}
+      {tab === "profil" && (
+        <>
+          <Card style={{ marginBottom: 16 }}>
+            <div style={{ fontWeight: 700, color: C.text, marginBottom: 12 }}>Mon profil Heïdi</div>
+            <div style={{ padding: "8px 0", borderBottom: `1px solid ${C.border}` }}>
+              <div style={{ fontSize: 12, color: C.muted }}>Type de profil</div>
+              <div style={{ fontWeight: 700, color: profilColor, marginTop: 2 }}>{PROFIL_LABELS[user?.profil] || "Non défini"}</div>
+            </div>
+            {user?.maladies?.length > 0 && (
+              <div style={{ paddingTop: 10 }}>
+                <div style={{ fontSize: 12, color: C.muted, marginBottom: 6 }}>Pathologies</div>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+                  {user.maladies.map((m, i) => (
+                    <span key={i} style={{ background: C.purplePale, color: C.purple, padding: "3px 10px", borderRadius: 20, fontSize: 12, fontWeight: 600 }}>{m}</span>
+                  ))}
+                </div>
+              </div>
+            )}
+            {user?.lienParente && <div style={{ paddingTop: 10, fontSize: 13, color: C.muted }}>Lien : <strong style={{ color: C.text }}>{user.lienParente}</strong></div>}
+            {user?.profession && <div style={{ paddingTop: 10, fontSize: 13, color: C.muted }}>Profession : <strong style={{ color: C.text }}>{user.profession}</strong></div>}
+          </Card>
+          <Card style={{ background: C.purplePale, border: "none" }}>
+            <p style={{ margin: 0, fontSize: 13, color: C.text, lineHeight: 1.7 }}>🔒 <strong>Tes données t'appartiennent.</strong> Heïdi respecte le RGPD. Ces informations sont visibles uniquement par les modérateurs.</p>
+          </Card>
+        </>
+      )}
+
+      {/* Tab Mes informations */}
+      {tab === "infos" && (
+        <Card style={{ marginBottom: 16 }}>
+          <div style={{ fontWeight: 700, color: C.text, marginBottom: 12 }}>🔒 Mes informations personnelles</div>
+          <div style={{ fontSize: 12, color: C.muted, marginBottom: 14, background: C.purplePale, padding: "8px 12px", borderRadius: 10 }}>
+            Visibles uniquement par toi et les modérateurs de Heïdi.
+          </div>
+          {[
+            { label: "Prénom", val: user?.prenom },
+            { label: "Nom", val: user?.nom },
+            { label: "Genre", val: user?.genre },
+            { label: "Date de naissance", val: user?.dateNaissance || null },
+            { label: "Ville", val: user?.ville },
+            { label: "Code postal", val: user?.codePostal },
+            { label: "Email", val: user?.email },
+          ].map((item, i, arr) => item.val ? (
+            <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 0", borderBottom: i < arr.length - 1 ? `1px solid ${C.border}` : "none" }}>
+              <div style={{ fontSize: 13, color: C.muted }}>{item.label}</div>
+              <div style={{ fontSize: 13, fontWeight: 700, color: C.text }}>{item.val}</div>
+            </div>
+          ) : null)}
+        </Card>
+      )}
+
+      {/* Tab Compte */}
+      {tab === "compte" && (
+        <>
+          <Card style={{ marginBottom: 16 }}>
+            <div style={{ fontWeight: 700, color: C.text, marginBottom: 12 }}>Paramètres du compte</div>
+            <div style={{ fontSize: 13, color: C.muted, padding: "10px 0", borderBottom: `1px solid ${C.border}` }}>
+              Email : <strong style={{ color: C.text }}>{user?.email}</strong>
+            </div>
+          </Card>
+          <Card style={{ background: "#FEE2E2", border: `1px solid ${C.urgent}33`, marginBottom: 16 }}>
+            <div style={{ fontWeight: 700, color: C.urgent, marginBottom: 8 }}>Se déconnecter</div>
+            <div style={{ fontSize: 13, color: C.muted, marginBottom: 14 }}>Tu pourras te reconnecter à tout moment.</div>
+            <button onClick={onLogout} style={{ width: "100%", padding: 12, borderRadius: 50, background: C.urgent, color: "#fff", border: "none", fontWeight: 700, fontSize: 14, cursor: "pointer" }}>
+              Se déconnecter
+            </button>
+          </Card>
+          <Card style={{ background: C.purplePale, border: "none" }}>
+            <p style={{ margin: 0, fontSize: 13, color: C.text, lineHeight: 1.7 }}>🔒 <strong>Tes données t'appartiennent.</strong> Heïdi respecte le RGPD.</p>
+          </Card>
+        </>
+      )}
     </div>
   );
 }
@@ -2297,13 +2169,8 @@ function SplashScreen({ onFinish }) {
     <div style={{ minHeight: "100vh", background: `linear-gradient(135deg, ${C.purple}, ${C.purpleLight})`,
       display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
       fontFamily: "'Inter', system-ui, sans-serif" }}>
-      <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{marginBottom: 16}}>
-          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/>
-          <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
-          <line x1="9" y1="9" x2="9.01" y2="9"/>
-          <line x1="15" y1="9" x2="15.01" y2="9"/>
-        </svg>
-      <div style={{ fontSize: 32, fontWeight: 800, color: "#fff", letterSpacing: "-0.5px" }}>Heidi</div>
+      <div style={{ fontSize: 72, marginBottom: 16 }}>🌸</div>
+      <div style={{ fontSize: 32, fontWeight: 800, color: "#fff", letterSpacing: "-0.5px" }}>Heïdi</div>
       <div style={{ fontSize: 16, color: "rgba(255,255,255,0.8)", marginTop: 8 }}>Un espace pour toi, à ton rythme</div>
       <div style={{ marginTop: 48, display: "flex", gap: 8 }}>
         {[0,1,2].map(i => (
@@ -2321,46 +2188,27 @@ function OnboardingScreen({ onFinish }) {
 
   const slides = [
     {
-      icon: (
-        <svg width="90" height="90" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/>
-          <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
-          <line x1="9" y1="9" x2="9.01" y2="9"/>
-          <line x1="15" y1="9" x2="15.01" y2="9"/>
-        </svg>
-      ),
-      title: "Bienvenue sur Heidi",
+      emoji: "🌸",
+      title: "Bienvenue sur Heïdi",
       desc: "Un espace bienveillant pour prendre soin de ta santé mentale, à ton propre rythme.",
       bg: `linear-gradient(135deg, ${C.purple}, ${C.purpleLight})`,
     },
     {
-      icon: (
-        <svg width="90" height="90" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
-        </svg>
-      ),
+      emoji: "🎮",
       title: "Des activités pour aller mieux",
       desc: "Respiration, journal des émotions, gratitude... Des exercices conçus avec des professionnels.",
       bg: `linear-gradient(135deg, ${C.green}, #5AA882)`,
     },
     {
-      icon: (
-        <svg width="90" height="90" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
-        </svg>
-      ),
+      emoji: "💬",
       title: "Tu n'es pas seul·e",
       desc: "Parle à des soignants, des pair-aidants, rejoins une communauté qui comprend ce que tu traverses.",
       bg: `linear-gradient(135deg, ${C.orange}, #E07D3F)`,
     },
     {
-      icon: (
-        <svg width="90" height="90" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/>
-        </svg>
-      ),
+      emoji: "💜",
       title: "Aucun jugement, aucune pression",
-      desc: "Heidi ne récompense pas la performance. Il valorise ta présence et tes petits pas.",
+      desc: "Heïdi ne récompense pas la performance. Il valorise ta présence et tes petits pas.",
       bg: `linear-gradient(135deg, ${C.pink}, #D06090)`,
     },
   ];
@@ -2374,7 +2222,7 @@ function OnboardingScreen({ onFinish }) {
       fontFamily: "'Inter', system-ui, sans-serif", transition: "background 0.5s" }}>
 
       <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center" }}>
-        <div style={{ marginBottom: 24, opacity: 0.95 }}>{slide.icon}</div>
+        <div style={{ fontSize: 80, marginBottom: 24 }}>{slide.emoji}</div>
         <div style={{ fontSize: 26, fontWeight: 800, color: "#fff", marginBottom: 16, lineHeight: 1.3 }}>{slide.title}</div>
         <div style={{ fontSize: 16, color: "rgba(255,255,255,0.85)", lineHeight: 1.8, maxWidth: 320 }}>{slide.desc}</div>
       </div>
@@ -2522,36 +2370,106 @@ function LoginScreen({ onLogin, onGoRegister }) {
   );
 }
 
+// ─── Sélecteur de date ────────────────────────────────────────
+function DateSelecteur({ value, onChange }) {
+  const MOIS = ["Janvier","Février","Mars","Avril","Mai","Juin","Juillet","Août","Septembre","Octobre","Novembre","Décembre"];
+  const now = new Date();
+  const parts = value ? value.split("-") : ["","",""];
+  const [year, setYear] = useState(parts[0] || "");
+  const [month, setMonth] = useState(parts[1] || "");
+  const [day, setDay] = useState(parts[2] || "");
+
+  const years = Array.from({ length: 100 }, (_, i) => String(now.getFullYear() - i));
+  const daysInMonth = (year && month) ? new Date(Number(year), Number(month), 0).getDate() : 31;
+  const days = Array.from({ length: daysInMonth }, (_, i) => String(i + 1).padStart(2, "0"));
+
+  useEffect(() => {
+    if (year && month && day) {
+      onChange(`${year}-${month}-${day}`);
+    }
+  }, [year, month, day]);
+
+  const sel = {
+    padding: "11px 8px", borderRadius: 12, fontSize: 13,
+    border: `1px solid ${C.border}`, outline: "none", background: "#fff",
+    fontFamily: "inherit", color: C.text, cursor: "pointer", width: "100%",
+  };
+
+  return (
+    <div style={{ marginBottom: 14 }}>
+      <label style={{ fontSize: 13, fontWeight: 700, color: C.text, display: "block", marginBottom: 5 }}>
+        Date de naissance <span style={{ color: "#E05A5A" }}>*</span>
+      </label>
+      <div style={{ display: "flex", gap: 8 }}>
+        <select value={day} onChange={e => setDay(e.target.value)} style={{ ...sel, flex: 0.8 }}>
+          <option value="">Jour</option>
+          {days.map(d => <option key={d} value={d}>{d}</option>)}
+        </select>
+        <select value={month} onChange={e => { setMonth(e.target.value); setDay(""); }} style={{ ...sel, flex: 1.4 }}>
+          <option value="">Mois</option>
+          {MOIS.map((m, i) => <option key={m} value={String(i+1).padStart(2,"0")}>{m}</option>)}
+        </select>
+        <select value={year} onChange={e => { setYear(e.target.value); setDay(""); }} style={{ ...sel, flex: 1 }}>
+          <option value="">Année</option>
+          {years.map(y => <option key={y} value={y}>{y}</option>)}
+        </select>
+      </div>
+      {year && month && day && (
+        <div style={{ fontSize: 12, color: C.green, marginTop: 4, fontWeight: 600 }}>
+          ✓ {day} {MOIS[Number(month)-1]} {year}
+        </div>
+      )}
+    </div>
+  );
+}
+
+
 function RegisterScreen({ onRegister, onGoLogin }) {
   const [step, setStep] = useState(1);
-  const [prenom, setPrenom] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPass, setConfirmPass] = useState("");
   const [showPass, setShowPass] = useState(false);
   const [profil, setProfil] = useState(null);
-  const [mode, setMode] = useState("Mode libre");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
+  // Infos personnelles
+  const [genre, setGenre] = useState("");
+  const [nom, setNom] = useState("");
+  const [prenom, setPrenom] = useState("");
+  const [dateNaissance, setDateNaissance] = useState("");
+  const [ville, setVille] = useState("");
+  const [codePostal, setCodePostal] = useState("");
+
+  // Infos spécifiques
+  const [maladies, setMaladies] = useState([]);
+  const [maladieFree, setMaladieFree] = useState("");
+  const [lienParente, setLienParente] = useState("");
+  const [profession, setProfession] = useState("");
+  const [codeMode, setCodeMode] = useState("");
+
   const PROFILS = [
-    { id: "souffrance", emoji: "🌱", label: "Je vis avec des troubles mentaux", desc: "Je cherche du soutien et des ressources" },
-    { id: "proche", emoji: "🤝", label: "Je suis proche/aidant·e", desc: "J'accompagne quelqu'un en souffrance" },
-    { id: "curieux", emoji: "📚", label: "Je m'informe", desc: "Je veux mieux comprendre la santé mentale" },
+    { id: "souffrance", color: "#8B6FC6", bg: "#EDE8F8", label: "Personne en souffrance", desc: "Je vis avec des difficultés de santé mentale" },
+    { id: "proche", color: "#7BBF9A", bg: "#E4F5EC", label: "Proche d'une personne en souffrance", desc: "J'accompagne un proche dans sa difficulté" },
+    { id: "ami", color: "#F4A261", bg: "#FEF0E4", label: "Ami·e qui vient soutenir", desc: "Je veux aider un·e ami·e en souffrance" },
+    { id: "specialiste", color: "#E891B0", bg: "#FDEAF2", label: "Professionnel de santé mentale", desc: "Je suis un professionnel du secteur psy" },
+    { id: "visiteur", color: "#7090B0", bg: "#E8EEF8", label: "Visiteur·trice", desc: "Je découvre l'application" },
+    { id: "modo", color: "#2060A0", bg: "#E0EAF8", label: "Modérateur·trice", desc: "J'ai un code d'accès modérateur" },
   ];
 
-  const MODES = [
-    { id: "Mode libre", label: "Mode libre", desc: "Aucune preuve demandée, à ton rythme total" },
-    { id: "Mode accompagné", label: "Mode accompagné", desc: "Rappels doux et plus de présence" },
-    { id: "Mode engagement", label: "Mode engagement", desc: "Objectifs et validation de quêtes par photo" },
-  ];
+  const MALADIES = ["Dépression", "Anxiété généralisée", "Trouble bipolaire", "Schizophrénie", "TOC", "PTSD", "Trouble borderline", "Troubles alimentaires", "Phobie sociale", "TDAH", "Autisme"];
+  const LIENS = ["Parent", "Enfant", "Conjoint·e", "Frère / Sœur", "Grand-parent", "Ami·e proche", "Tuteur·trice", "Autre"];
+  const PROFESSIONS = ["Psychiatre", "Psychologue", "Psychothérapeute", "Infirmier·ère", "Médecin généraliste", "Éducateur·trice spécialisé·e", "Assistant·e social·e", "Pair-aidant·e professionnel·le", "Autre"];
+
+  const profilSelectionne = PROFILS.find(p => p.id === profil);
+  const toggleMaladie = (m) => setMaladies(prev => prev.includes(m) ? prev.filter(x => x !== m) : [...prev, m]);
 
   const nextStep = () => {
     setError("");
     if (step === 1) {
-      if (!prenom.trim()) { setError("Entre ton prénom."); return; }
       if (!email.trim() || !email.includes("@")) { setError("Email invalide."); return; }
-      if (password.length < 6) { setError("Mot de passe trop court (6 caractères min)."); return; }
+      if (password.length < 6) { setError("Mot de passe trop court (6 min)."); return; }
       if (password !== confirmPass) { setError("Les mots de passe ne correspondent pas."); return; }
       setStep(2);
     } else if (step === 2) {
@@ -2561,22 +2479,31 @@ function RegisterScreen({ onRegister, onGoLogin }) {
   };
 
   const handleRegister = async () => {
+    if (!genre) { setError("Choisis ton genre."); return; }
+    if (!prenom.trim()) { setError("Entre ton prénom. *"); return; }
+    if (!nom.trim()) { setError("Entre ton nom. *"); return; }
+    if (!dateNaissance.trim()) { setError("Entre ta date de naissance. *"); return; }
+    if (!ville.trim()) { setError("Entre ta ville. *"); return; }
+    if (!codePostal.trim()) { setError("Entre ton code postal. *"); return; }
+    if (profil === "modo" && codeMode !== "12345678") { setError("Code modérateur incorrect."); return; }
     setLoading(true);
     try {
-      const data = await supabase.signUp(email.trim(), password, { prenom, profil, mode });
+      const metadata = {
+        prenom, nom, genre, dateNaissance, ville, codePostal, profil,
+        maladies: profil === "souffrance" ? [...maladies, maladieFree].filter(Boolean) : [],
+        lienParente: profil === "proche" ? lienParente : "",
+        profession: profil === "specialiste" ? profession : "",
+        isModo: profil === "modo",
+      };
+      const data = await supabase.signUp(email.trim(), password, metadata);
       if (data.error) {
-        setError(data.error.message === "User already registered"
-          ? "Cet email est déjà utilisé."
-          : "Erreur lors de la création du compte.");
-        setLoading(false);
-        return;
+        setError(data.error.message === "User already registered" ? "Cet email est déjà utilisé." : "Erreur lors de la création du compte.");
+        setLoading(false); return;
       }
       const user = {
-        id: data.user?.id,
-        email: email.toLowerCase(),
-        prenom, profil, mode,
-        token: data.session?.access_token,
-        coins: 0,
+        id: data.user?.id, email: email.toLowerCase(),
+        prenom, nom, genre, dateNaissance, ville, codePostal, profil,
+        isModo: profil === "modo", token: data.session?.access_token, coins: 0,
       };
       setLoading(false);
       onRegister(user);
@@ -2587,129 +2514,193 @@ function RegisterScreen({ onRegister, onGoLogin }) {
   };
 
   return (
-    <div style={{ minHeight: "100vh", background: C.bg, fontFamily: "'Inter', system-ui, sans-serif",
-      maxWidth: 430, margin: "0 auto", display: "flex", flexDirection: "column" }}>
-
-      {/* Header */}
-      <div style={{ background: `linear-gradient(135deg, ${C.purple}, ${C.purpleLight})`,
-        padding: "40px 24px 24px" }}>
-        <div style={{ display: "flex", gap: 8, marginBottom: 16 }}>
+    <div style={{ minHeight: "100vh", background: C.bg, fontFamily: "'Inter', system-ui, sans-serif", maxWidth: 430, margin: "0 auto", display: "flex", flexDirection: "column" }}>
+      <div style={{ background: profilSelectionne ? `linear-gradient(135deg, ${profilSelectionne.color}, ${profilSelectionne.color}99)` : `linear-gradient(135deg, ${C.purple}, ${C.purpleLight})`, padding: "40px 24px 24px", transition: "background 0.4s" }}>
+        <div style={{ display: "flex", gap: 6, marginBottom: 14 }}>
           {[1,2,3].map(i => (
-            <div key={i} style={{ flex: 1, height: 4, borderRadius: 2,
-              background: i <= step ? "#fff" : "rgba(255,255,255,0.3)",
-              transition: "background 0.3s" }} />
+            <div key={i} style={{ flex: 1, height: 4, borderRadius: 2, background: i <= step ? "#fff" : "rgba(255,255,255,0.3)", transition: "background 0.3s" }} />
           ))}
         </div>
-        <div style={{ fontSize: 13, color: "rgba(255,255,255,0.8)" }}>Étape {step}/3</div>
-        <div style={{ fontSize: 22, fontWeight: 800, color: "#fff", marginTop: 4 }}>
-          {step === 1 ? "Créer ton compte" : step === 2 ? "Ton profil" : "Ton mode"}
+        <div style={{ fontSize: 12, color: "rgba(255,255,255,0.8)" }}>Étape {step}/3</div>
+        <div style={{ fontSize: 20, fontWeight: 800, color: "#fff", marginTop: 4 }}>
+          {["Créer ton compte", "Ton profil", "Tes informations"][step - 1]}
         </div>
       </div>
 
-      <div style={{ padding: "24px", flex: 1 }}>
-        {error && (
-          <div style={{ background: "#FEE2E2", borderRadius: 12, padding: "10px 14px",
-            marginBottom: 16, fontSize: 13, color: "#E05A5A", fontWeight: 600 }}>
-            ⚠️ {error}
-          </div>
-        )}
+      <div style={{ padding: "20px 24px", flex: 1, overflowY: "auto" }}>
+        {error && <div style={{ background: "#FEE2E2", borderRadius: 12, padding: "10px 14px", marginBottom: 14, fontSize: 13, color: "#E05A5A", fontWeight: 600 }}>⚠️ {error}</div>}
 
-        {/* Étape 1 : Infos */}
+        {/* Étape 1 */}
         {step === 1 && (
           <>
-            {[
-              { label: "Ton prénom", val: prenom, set: setPrenom, placeholder: "Comment t'appelle-t-on ?", type: "text" },
-              { label: "Email", val: email, set: setEmail, placeholder: "ton@email.com", type: "email" },
-            ].map(f => (
-              <div key={f.label} style={{ marginBottom: 16 }}>
-                <label style={{ fontSize: 13, fontWeight: 700, color: C.text, display: "block", marginBottom: 6 }}>{f.label}</label>
-                <input value={f.val} onChange={e => f.set(e.target.value)} type={f.type}
-                  placeholder={f.placeholder}
-                  style={{ width: "100%", padding: "12px 16px", borderRadius: 14, fontSize: 15,
-                    border: `1px solid ${C.border}`, outline: "none", background: "#fff",
-                    boxSizing: "border-box", fontFamily: "inherit" }} />
+            {[{label:"Email", val:email, set:setEmail, type:"email", placeholder:"ton@email.com"},].map(f => (
+              <div key={f.label} style={{ marginBottom: 14 }}>
+                <label style={{ fontSize: 13, fontWeight: 700, color: C.text, display: "block", marginBottom: 5 }}>{f.label} <span style={{color:"#E05A5A"}}>*</span></label>
+                <input value={f.val} onChange={e => f.set(e.target.value)} type={f.type} placeholder={f.placeholder}
+                  style={{ width: "100%", padding: "11px 14px", borderRadius: 12, fontSize: 14, border: `1px solid ${C.border}`, outline: "none", background: "#fff", boxSizing: "border-box", fontFamily: "inherit" }} />
               </div>
             ))}
-            <div style={{ marginBottom: 16 }}>
-              <label style={{ fontSize: 13, fontWeight: 700, color: C.text, display: "block", marginBottom: 6 }}>Mot de passe</label>
+            <div style={{ marginBottom: 14 }}>
+              <label style={{ fontSize: 13, fontWeight: 700, color: C.text, display: "block", marginBottom: 5 }}>Mot de passe <span style={{color:"#E05A5A"}}>*</span></label>
               <div style={{ position: "relative" }}>
-                <input value={password} onChange={e => setPassword(e.target.value)}
-                  type={showPass ? "text" : "password"} placeholder="6 caractères minimum"
-                  style={{ width: "100%", padding: "12px 48px 12px 16px", borderRadius: 14, fontSize: 15,
-                    border: `1px solid ${C.border}`, outline: "none", background: "#fff",
-                    boxSizing: "border-box", fontFamily: "inherit" }} />
-                <button onClick={() => setShowPass(s => !s)}
-                  style={{ position: "absolute", right: 14, top: "50%", transform: "translateY(-50%)",
-                    background: "none", border: "none", cursor: "pointer", fontSize: 18 }}>
+                <input value={password} onChange={e => setPassword(e.target.value)} type={showPass ? "text" : "password"} placeholder="6 caractères minimum"
+                  style={{ width: "100%", padding: "11px 44px 11px 14px", borderRadius: 12, fontSize: 14, border: `1px solid ${C.border}`, outline: "none", background: "#fff", boxSizing: "border-box", fontFamily: "inherit" }} />
+                <button onClick={() => setShowPass(s => !s)} style={{ position: "absolute", right: 12, top: "50%", transform: "translateY(-50%)", background: "none", border: "none", cursor: "pointer", fontSize: 16 }}>
                   {showPass ? "🙈" : "👁️"}
                 </button>
               </div>
             </div>
-            <div style={{ marginBottom: 24 }}>
-              <label style={{ fontSize: 13, fontWeight: 700, color: C.text, display: "block", marginBottom: 6 }}>Confirme ton mot de passe</label>
-              <input value={confirmPass} onChange={e => setConfirmPass(e.target.value)}
-                type="password" placeholder="••••••••"
-                style={{ width: "100%", padding: "12px 16px", borderRadius: 14, fontSize: 15,
-                  border: `1px solid ${C.border}`, outline: "none", background: "#fff",
-                  boxSizing: "border-box", fontFamily: "inherit" }} />
+            <div style={{ marginBottom: 14 }}>
+              <label style={{ fontSize: 13, fontWeight: 700, color: C.text, display: "block", marginBottom: 5 }}>Confirme le mot de passe <span style={{color:"#E05A5A"}}>*</span></label>
+              <div style={{ position: "relative" }}>
+                <input value={confirmPass} onChange={e => setConfirmPass(e.target.value)} type={showPass ? "text" : "password"} placeholder="••••••••"
+                  style={{ width: "100%", padding: "11px 44px 11px 14px", borderRadius: 12, fontSize: 14, border: `1px solid ${C.border}`, outline: "none", background: "#fff", boxSizing: "border-box", fontFamily: "inherit" }} />
+                <button onClick={() => setShowPass(s => !s)} style={{ position: "absolute", right: 12, top: "50%", transform: "translateY(-50%)", background: "none", border: "none", cursor: "pointer", fontSize: 16 }}>
+                  {showPass ? "🙈" : "👁️"}
+                </button>
+              </div>
             </div>
           </>
         )}
 
-        {/* Étape 2 : Profil */}
+        {/* Étape 2 */}
         {step === 2 && (
-          <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 24 }}>
-            <div style={{ fontSize: 14, color: C.muted, marginBottom: 4 }}>Ces infos nous aident à personnaliser ton expérience.</div>
+          <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 20 }}>
+            <div style={{ fontSize: 13, color: C.muted, marginBottom: 4 }}>Ces informations sont visibles uniquement par les modérateurs.</div>
             {PROFILS.map(p => (
               <button key={p.id} onClick={() => setProfil(p.id)}
-                style={{ padding: 16, borderRadius: 16, border: profil === p.id ? `2px solid ${C.purple}` : `2px solid ${C.border}`,
-                  background: profil === p.id ? C.purplePale : "#fff", cursor: "pointer", textAlign: "left" }}>
-                <div style={{ fontSize: 28, marginBottom: 6 }}>{p.emoji}</div>
-                <div style={{ fontWeight: 700, color: C.text, fontSize: 15 }}>{p.label}</div>
-                <div style={{ fontSize: 13, color: C.muted, marginTop: 2 }}>{p.desc}</div>
+                style={{ padding: "14px 16px", borderRadius: 16, border: profil === p.id ? `2px solid ${p.color}` : `2px solid ${C.border}`, background: profil === p.id ? p.bg : "#fff", cursor: "pointer", textAlign: "left" }}>
+                <div style={{ fontWeight: 700, color: C.text, fontSize: 14 }}>{p.label}</div>
+                <div style={{ fontSize: 12, color: C.muted, marginTop: 2 }}>{p.desc}</div>
               </button>
             ))}
           </div>
         )}
 
-        {/* Étape 3 : Mode */}
+        {/* Étape 3 */}
         {step === 3 && (
-          <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 24 }}>
-            <div style={{ fontSize: 14, color: C.muted, marginBottom: 4 }}>Tu peux changer ce choix à tout moment dans ton profil.</div>
-            {MODES.map(m => (
-              <button key={m.id} onClick={() => setMode(m.id)}
-                style={{ padding: 16, borderRadius: 16, border: mode === m.id ? `2px solid ${C.purple}` : `2px solid ${C.border}`,
-                  background: mode === m.id ? C.purplePale : "#fff", cursor: "pointer", textAlign: "left" }}>
-                <div style={{ fontWeight: 700, color: C.text, fontSize: 15 }}>{m.label}</div>
-                <div style={{ fontSize: 13, color: C.muted, marginTop: 4 }}>{m.desc}</div>
-              </button>
-            ))}
-          </div>
+          <>
+            <div style={{ background: "#FEF9E4", borderRadius: 12, padding: "10px 14px", marginBottom: 12, border: `1px solid ${C.yellow}66` }}>
+              <div style={{ fontSize: 12, color: "#795548" }}>Les champs marqués <span style={{ color: "#E05A5A", fontWeight: 700 }}>*</span> sont obligatoires. Ces informations sont privées et visibles uniquement par les modérateurs.</div>
+            </div>
+
+            {/* Genre */}
+            <div style={{ marginBottom: 14 }}>
+              <label style={{ fontSize: 13, fontWeight: 700, color: C.text, display: "block", marginBottom: 8 }}>Genre <span style={{color:"#E05A5A"}}>*</span></label>
+              <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+                {["Homme", "Femme", "Non-binaire", "Préfère ne pas dire"].map(g => (
+                  <button key={g} onClick={() => setGenre(g)}
+                    style={{ padding: "8px 12px", borderRadius: 10, fontSize: 12, fontWeight: 600, border: genre === g ? `2px solid ${C.purple}` : `2px solid ${C.border}`, background: genre === g ? C.purplePale : "#fff", cursor: "pointer", color: C.text }}>
+                    {g}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Prénom / Nom */}
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 4 }}>
+              {[{label:"Prénom", val:prenom, set:setPrenom, ph:"Ton prénom"},{label:"Nom", val:nom, set:setNom, ph:"Ton nom"}].map(f => (
+                <div key={f.label}>
+                  <label style={{ fontSize: 13, fontWeight: 700, color: C.text, display: "block", marginBottom: 5 }}>{f.label} <span style={{color:"#E05A5A"}}>*</span></label>
+                  <input value={f.val} onChange={e => f.set(e.target.value)} placeholder={f.ph}
+                    style={{ width: "100%", padding: "11px 14px", borderRadius: 12, fontSize: 14, border: `1px solid ${C.border}`, outline: "none", background: "#fff", boxSizing: "border-box", fontFamily: "inherit" }} />
+                </div>
+              ))}
+            </div>
+
+            {/* Date de naissance */}
+            <DateSelecteur value={dateNaissance} onChange={setDateNaissance} />
+
+            {/* Ville + Code postal */}
+            <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: 10, marginBottom: 14 }}>
+              <div>
+                <label style={{ fontSize: 13, fontWeight: 700, color: C.text, display: "block", marginBottom: 5 }}>Ville <span style={{color:"#E05A5A"}}>*</span></label>
+                <input value={ville} onChange={e => setVille(e.target.value)} placeholder="Ta ville"
+                  style={{ width: "100%", padding: "11px 14px", borderRadius: 12, fontSize: 14, border: `1px solid ${C.border}`, outline: "none", background: "#fff", boxSizing: "border-box", fontFamily: "inherit" }} />
+              </div>
+              <div>
+                <label style={{ fontSize: 13, fontWeight: 700, color: C.text, display: "block", marginBottom: 5 }}>Code postal <span style={{color:"#E05A5A"}}>*</span></label>
+                <input value={codePostal} onChange={e => setCodePostal(e.target.value)} placeholder="75001" maxLength={5}
+                  style={{ width: "100%", padding: "11px 14px", borderRadius: 12, fontSize: 14, border: `1px solid ${C.border}`, outline: "none", background: "#fff", boxSizing: "border-box", fontFamily: "inherit" }} />
+              </div>
+            </div>
+
+            {/* Champs spécifiques */}
+            {profil === "souffrance" && (
+              <div style={{ marginBottom: 14 }}>
+                <label style={{ fontSize: 13, fontWeight: 700, color: C.text, display: "block", marginBottom: 8 }}>Type(s) de maladie (optionnel)</label>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 8 }}>
+                  {MALADIES.map(m => (
+                    <button key={m} onClick={() => toggleMaladie(m)}
+                      style={{ padding: "5px 10px", borderRadius: 20, fontSize: 12, fontWeight: 600, border: maladies.includes(m) ? `2px solid ${C.purple}` : `2px solid ${C.border}`, background: maladies.includes(m) ? C.purplePale : "#fff", cursor: "pointer", color: C.text }}>
+                      {m}
+                    </button>
+                  ))}
+                </div>
+                <input value={maladieFree} onChange={e => setMaladieFree(e.target.value)} placeholder="Autre (précise)..."
+                  style={{ width: "100%", padding: "10px 14px", borderRadius: 12, fontSize: 13, border: `1px solid ${C.border}`, outline: "none", background: "#fff", boxSizing: "border-box", fontFamily: "inherit" }} />
+              </div>
+            )}
+
+            {profil === "proche" && (
+              <div style={{ marginBottom: 14 }}>
+                <label style={{ fontSize: 13, fontWeight: 700, color: C.text, display: "block", marginBottom: 5 }}>Lien de parenté</label>
+                <select value={lienParente} onChange={e => setLienParente(e.target.value)}
+                  style={{ width: "100%", padding: "11px 14px", borderRadius: 12, fontSize: 14, border: `1px solid ${C.border}`, outline: "none", background: "#fff", boxSizing: "border-box", fontFamily: "inherit", color: C.text }}>
+                  <option value="">— Sélectionner —</option>
+                  {LIENS.map(l => <option key={l} value={l}>{l}</option>)}
+                </select>
+              </div>
+            )}
+
+            {profil === "specialiste" && (
+              <div style={{ marginBottom: 14 }}>
+                <label style={{ fontSize: 13, fontWeight: 700, color: C.text, display: "block", marginBottom: 5 }}>Profession</label>
+                <select value={profession} onChange={e => setProfession(e.target.value)}
+                  style={{ width: "100%", padding: "11px 14px", borderRadius: 12, fontSize: 14, border: `1px solid ${C.border}`, outline: "none", background: "#fff", boxSizing: "border-box", fontFamily: "inherit", color: C.text }}>
+                  <option value="">— Sélectionner —</option>
+                  {PROFESSIONS.map(p => <option key={p} value={p}>{p}</option>)}
+                </select>
+              </div>
+            )}
+
+            {profil === "modo" && (
+              <div style={{ marginBottom: 14 }}>
+                <label style={{ fontSize: 13, fontWeight: 700, color: C.text, display: "block", marginBottom: 5 }}>Code modérateur (8 chiffres) <span style={{color:"#E05A5A"}}>*</span></label>
+                <input value={codeMode} onChange={e => setCodeMode(e.target.value.replace(/[^0-9]/g, "").slice(0, 8))}
+                  type="password" placeholder="••••••••" maxLength={8}
+                  style={{ width: "100%", padding: "11px 14px", borderRadius: 12, fontSize: 14, border: `1px solid ${C.border}`, outline: "none", background: "#fff", boxSizing: "border-box", fontFamily: "inherit", letterSpacing: 4 }} />
+                <div style={{ fontSize: 12, color: C.muted, marginTop: 4 }}>Ce code est fourni par l'administrateur de Heïdi.</div>
+              </div>
+            )}
+          </>
         )}
 
-        {step < 3 ? (
-          <button onClick={nextStep}
-            style={{ width: "100%", padding: 14, borderRadius: 50, background: C.purple,
-              color: "#fff", border: "none", fontWeight: 800, fontSize: 16, cursor: "pointer",
-              boxShadow: `0 4px 20px ${C.purple}44`, marginBottom: 16 }}>
-            Continuer →
-          </button>
-        ) : (
-          <button onClick={handleRegister} disabled={loading}
-            style={{ width: "100%", padding: 14, borderRadius: 50,
-              background: loading ? C.muted : C.purple, color: "#fff", border: "none",
-              fontWeight: 800, fontSize: 16, cursor: loading ? "default" : "pointer",
-              boxShadow: loading ? "none" : `0 4px 20px ${C.purple}44`, marginBottom: 16 }}>
-            {loading ? "Création..." : "Créer mon compte 🌸"}
-          </button>
-        )}
+        {/* Boutons navigation */}
+        <div style={{ display: "flex", gap: 10, marginBottom: 16 }}>
+          {step > 1 && (
+            <button onClick={() => { setStep(s => s - 1); setError(""); }}
+              style={{ padding: "14px 20px", borderRadius: 50, background: C.border, color: C.muted, border: "none", fontWeight: 700, fontSize: 15, cursor: "pointer" }}>
+              ← Retour
+            </button>
+          )}
+          {step < 3 ? (
+            <button onClick={nextStep}
+              style={{ flex: 1, padding: 14, borderRadius: 50, background: profilSelectionne ? profilSelectionne.color : C.purple, color: "#fff", border: "none", fontWeight: 800, fontSize: 15, cursor: "pointer" }}>
+              Continuer →
+            </button>
+          ) : (
+            <button onClick={handleRegister} disabled={loading}
+              style={{ flex: 1, padding: 14, borderRadius: 50, background: loading ? C.muted : (profilSelectionne ? profilSelectionne.color : C.purple), color: "#fff", border: "none", fontWeight: 800, fontSize: 15, cursor: loading ? "default" : "pointer" }}>
+              {loading ? "Création..." : "Créer mon compte 💜"}
+            </button>
+          )}
+        </div>
 
         {step === 1 && (
           <div style={{ textAlign: "center", fontSize: 14, color: C.muted }}>
             Déjà un compte ?{" "}
-            <span onClick={onGoLogin} style={{ color: C.purple, fontWeight: 700, cursor: "pointer" }}>
-              Se connecter
-            </span>
+            <span onClick={onGoLogin} style={{ color: C.purple, fontWeight: 700, cursor: "pointer" }}>Se connecter</span>
           </div>
         )}
       </div>
@@ -2751,7 +2742,6 @@ function Heidi({ user, onLogout }) {
 
   const mainScreens = [S.HOME, S.QUESTS, S.CHAT, S.RESOURCES];
 
-
   return (
     <div style={{ fontFamily: "'Inter', system-ui, sans-serif", background: C.bg, minHeight: "100vh", maxWidth: 430, margin: "0 auto", display: "flex", flexDirection: "column" }}>
       <div style={{ flex: 1, overflowY: "auto", paddingBottom: 72 }}>
@@ -2775,7 +2765,7 @@ function Heidi({ user, onLogout }) {
       </div>
 
       <nav style={{ position: "fixed", bottom: 0, left: "50%", transform: "translateX(-50%)", width: "100%", maxWidth: 430, background: C.bgCard, borderTop: `1px solid ${C.border}`, display: "flex", justifyContent: "space-around", padding: "8px 0 16px" }}>
-        {NAV_ITEMS.map(item => (
+        {navItems.map(item => (
           <button key={item.s} onClick={() => setScreen(item.s)} style={{ background: "none", border: "none", display: "flex", flexDirection: "column", alignItems: "center", gap: 3, cursor: "pointer", padding: "4px 12px", color: screen === item.s ? C.purple : C.muted, fontWeight: screen === item.s ? 700 : 400 }}>
             <span style={{ fontSize: 20 }}>{item.icon}</span>
             <span style={{ fontSize: 11 }}>{item.label}</span>
