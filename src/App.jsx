@@ -509,7 +509,9 @@ function HomeScreen({ setScreen, quests, coins, user, currentAvatar, setCurrentA
             <div style={{ fontWeight: 700, color: C.urgent, fontSize: 15 }}>3114 — Prévention suicide</div>
             <div style={{ fontSize: 12, color: C.muted }}>Gratuit · 24h/24 · Confidentiel</div>
           </div>
-          <Btn small color={C.urgent} style={{ padding: "8px 14px" }}>Appeler</Btn>
+          <a href="tel:3114" style={{ textDecoration: "none" }}>
+            <Btn small color={C.urgent} style={{ padding: "8px 14px" }}>Appeler</Btn>
+          </a>
         </div>
       </Card>
 
