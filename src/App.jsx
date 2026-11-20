@@ -176,6 +176,89 @@ const LIVES = [
   { id: 4, icon: "🤝", title: "Trouver du soutien associatif", who: "Psycom", when: "Vendredi 12h", live: false },
 ];
 
+const PHRASES_ACCUEIL = [
+  { titre: "Tu es le bienvenu ici.", texte: "Peu importe comment tu vas aujourd'hui, cet espace est à toi. Sans jugement, sans attente." },
+  { titre: "Se lever le matin, c'est déjà beaucoup.", texte: "Heïdi ne récompense pas la performance. Elle valorise ta présence, tes petits pas, et ta persévérance." },
+  { titre: "Tu n'as rien à prouver.", texte: "Être là, ouvrir cette application, c'est déjà une belle chose. Le reste viendra à ton rythme." },
+  { titre: "Les petits pas comptent.", texte: "Boire un verre d'eau, respirer, sourire une seconde. Rien n'est trop petit pour être une victoire." },
+  { titre: "Tu n'es pas seul·e.", texte: "Des milliers de personnes traversent des choses semblables. Ici, tu peux en parler librement." },
+  { titre: "Aujourd'hui est un jour nouveau.", texte: "Hier a été ce qu'il a été. Aujourd'hui, tu recommences, et c'est déjà courageux." },
+  { titre: "Prendre soin de soi, ça s'apprend.", texte: "Et ça prend du temps. Sois patient·e avec toi-même, comme tu le serais avec un ami." },
+  { titre: "Tes émotions sont valides.", texte: "Toutes. Même celles qui font mal. Elles ont le droit d'exister et d'être écoutées." },
+  { titre: "Demander de l'aide, c'est une force.", texte: "Ce n'est jamais un aveu de faiblesse. C'est reconnaître qu'on mérite d'aller mieux." },
+  { titre: "Repose-toi si tu en as besoin.", texte: "Faire une pause n'est pas abandonner. C'est te donner ce dont ton corps et ton esprit ont besoin." },
+  { titre: "Tu as survécu à 100% de tes pires jours.", texte: "C'est un taux de réussite incroyable. Tu es plus solide que tu ne le crois." },
+  { titre: "Chaque jour est différent.", texte: "Certains seront lourds, d'autres plus légers. Les deux font partie du chemin." },
+];
+
+const AIDE_SOCIALE = [
+  {
+    categorie: "France Services",
+    couleur: "#2060A0", bg: "#E0EAF8", icone: "building",
+    desc: "Un guichet unique pour toutes tes démarches administratives, avec un agent qui t'accompagne en personne.",
+    contacts: [
+      { nom: "Trouver une France Services près de chez moi", detail: "Plus de 2 800 guichets en France", tel: "", lien: "france-services.gouv.fr" },
+      { nom: "Standard France Services", detail: "Renseignements et orientation", tel: "3939", lien: "" },
+    ],
+    aide: ["Constituer un dossier MDPH de A à Z", "Demande d'AAH, RSA, prime d'activité", "Déclaration d'impôts et CAF", "Ouverture de droits santé (CSS)", "Aide numérique (créer un compte, scanner)"],
+  },
+  {
+    categorie: "MDPH — Maison Départementale des Personnes Handicapées",
+    couleur: C.purple, bg: C.purplePale, icone: "profile",
+    desc: "C'est la MDPH qui reconnaît le handicap psychique et ouvre tes droits. Un dossier par département.",
+    contacts: [
+      { nom: "Trouver ma MDPH départementale", detail: "Une MDPH par département", tel: "", lien: "mdphenligne.cnsa.fr" },
+      { nom: "Dépôt de dossier en ligne", detail: "Formulaire Cerfa 15692*01", tel: "", lien: "mdphenligne.cnsa.fr" },
+      { nom: "CNSA — Caisse nationale de solidarité", detail: "Information nationale", tel: "", lien: "cnsa.fr" },
+    ],
+    aide: ["AAH — Allocation Adulte Handicapé", "RQTH — Reconnaissance Qualité Travailleur Handicapé", "PCH — Prestation de Compensation du Handicap", "Carte Mobilité Inclusion (CMI)", "Orientation vers un ESAT ou milieu adapté"],
+  },
+  {
+    categorie: "Assistantes sociales",
+    couleur: C.green, bg: C.greenPale, icone: "community",
+    desc: "Un accompagnement humain et gratuit pour débloquer une situation : logement, dettes, droits, isolement.",
+    contacts: [
+      { nom: "Assistante sociale de secteur", detail: "Via ton CCAS ou Conseil Départemental", tel: "", lien: "" },
+      { nom: "Assistante sociale hospitalière", detail: "Si tu es suivi·e à l'hôpital, demande-la", tel: "", lien: "" },
+      { nom: "Service social de la CAF", detail: "Pour les allocataires CAF", tel: "3230", lien: "caf.fr" },
+      { nom: "Service social de la CARSAT", detail: "Pour les assurés du régime général", tel: "3646", lien: "" },
+    ],
+    aide: ["Monter un dossier MDPH avec toi", "Recours contre une décision refusée", "Aide au logement et hébergement d'urgence", "Surendettement et budget", "Accès aux soins sans avance de frais"],
+  },
+  {
+    categorie: "CCAS — Centre Communal d'Action Sociale",
+    couleur: C.orange, bg: C.orangePale, icone: "home",
+    desc: "Le service social de ta mairie. Souvent le point d'entrée le plus rapide quand tu ne sais pas par où commencer.",
+    contacts: [
+      { nom: "CCAS de ma commune", detail: "Renseigne-toi à ta mairie", tel: "", lien: "" },
+      { nom: "Annuaire des CCAS", detail: "unccas.org", tel: "", lien: "unccas.org" },
+    ],
+    aide: ["Aide alimentaire d'urgence", "Aide financière ponctuelle", "Domiciliation administrative", "Orientation vers les bons services", "Accompagnement des démarches"],
+  },
+  {
+    categorie: "Aide juridique et recours",
+    couleur: C.pink, bg: C.pinkPale, icone: "resources",
+    desc: "Si un droit t'est refusé, tu peux contester. Ces services sont gratuits.",
+    contacts: [
+      { nom: "Défenseur des droits", detail: "Recours gratuit en cas de discrimination", tel: "09 69 39 00 00", lien: "defenseurdesdroits.fr" },
+      { nom: "Point-justice (ex CDAD)", detail: "Consultation juridique gratuite", tel: "", lien: "justice.fr" },
+      { nom: "Aide juridictionnelle", detail: "Avocat pris en charge selon revenus", tel: "", lien: "justice.fr" },
+    ],
+    aide: ["Contester un refus MDPH", "Recours devant le tribunal judiciaire", "Discrimination liée au handicap psychique", "Litige avec un employeur", "Protection juridique (curatelle, tutelle)"],
+  },
+  {
+    categorie: "Emploi et insertion",
+    couleur: "#7090B0", bg: "#E8EEF8", icone: "quests",
+    desc: "Reprendre le travail à son rythme, avec des dispositifs pensés pour le handicap psychique.",
+    contacts: [
+      { nom: "Cap Emploi", detail: "Accompagnement emploi handicap", tel: "", lien: "capemploi.fr" },
+      { nom: "France Travail (ex Pôle emploi)", detail: "Référent handicap disponible", tel: "3949", lien: "francetravail.fr" },
+      { nom: "Agefiph", detail: "Aides financières pour l'emploi", tel: "0 800 11 10 09", lien: "agefiph.fr" },
+    ],
+    aide: ["Emploi accompagné (job coach)", "Temps partiel thérapeutique", "Aménagement du poste de travail", "Formation professionnelle adaptée", "ESAT et entreprises adaptées"],
+  },
+];
+
 const FICHES = [
   {
     id: 1, icon: "😔", title: "Dépression", color: C.purplePale, border: C.purple,
@@ -200,6 +283,90 @@ const FICHES = [
     symptomes: ["Hallucinations", "Délires", "Désorganisation", "Repli sur soi", "Difficultés cognitives"],
     traitements: ["Antipsychotiques", "Suivi psychiatrique", "Réhabilitation psychosociale"],
     ressources: ["UNAFAM", "Centre médico-psychologique", "Équipe mobile psychiatrie"],
+  },
+  {
+    id: 5, icon: "🔁", title: "TOC — Trouble Obsessionnel Compulsif", color: C.purplePale, border: C.purple,
+    symptomes: ["Pensées obsédantes récurrentes", "Rituels de vérification", "Besoin de symétrie ou d'ordre", "Lavage de mains excessif", "Anxiété si le rituel est empêché"],
+    traitements: ["TCC (Thérapie Cognitive et Comportementale) avec exposition", "ISRS à dose élevée", "Thérapie EPR (Exposition avec Prévention de la Réponse)"],
+    ressources: ["AFTOC — Association française de personnes souffrant de TOC", "Psycom.fr", "Psychiatre spécialisé TOC"],
+  },
+  {
+    id: 6, icon: "⚡", title: "PTSD — Stress post-traumatique", color: C.orangePale, border: C.orange,
+    symptomes: ["Flashbacks et cauchemars", "Évitement des rappels du trauma", "Hypervigilance permanente", "Sursauts exagérés", "Engourdissement émotionnel"],
+    traitements: ["EMDR (désensibilisation par mouvements oculaires)", "TCC centrée sur le trauma", "Thérapie d'exposition prolongée"],
+    ressources: ["France Victimes — 116 006", "Centre régional du psychotraumatisme", "Psychologue spécialisé trauma"],
+  },
+  {
+    id: 7, icon: "🌗", title: "Trouble borderline (état-limite)", color: C.pinkPale, border: C.pink,
+    symptomes: ["Instabilité émotionnelle intense", "Peur de l'abandon", "Relations en montagnes russes", "Impulsivité", "Sentiment de vide chronique"],
+    traitements: ["Thérapie comportementale dialectique (TCD)", "Thérapie des schémas", "Suivi psychiatrique régulier"],
+    ressources: ["AFORPEL", "Psycom.fr", "Programme TCD en hôpital de jour"],
+  },
+  {
+    id: 8, icon: "🍽️", title: "Troubles des conduites alimentaires", color: C.greenPale, border: C.green,
+    symptomes: ["Restriction alimentaire sévère", "Crises de boulimie", "Peur intense de grossir", "Image du corps déformée", "Comportements compensatoires"],
+    traitements: ["Suivi pluridisciplinaire (psy + nutritionniste + médecin)", "TCC (Thérapie Cognitive et Comportementale)", "Thérapie familiale pour les jeunes"],
+    ressources: ["Ligne Anorexie Boulimie — 09 69 325 900", "FNA-TCA", "Médecin traitant"],
+  },
+  {
+    id: 9, icon: "🎯", title: "TDAH — Déficit de l'attention", color: C.yellowPale, border: C.yellow,
+    symptomes: ["Difficulté à maintenir l'attention", "Hyperactivité ou agitation intérieure", "Impulsivité", "Désorganisation chronique", "Procrastination importante"],
+    traitements: ["Méthylphénidate si indiqué", "Remédiation cognitive", "Coaching et aménagements du quotidien"],
+    ressources: ["HyperSupers TDAH France", "Centre de référence TDAH", "Neuropsychologue"],
+  },
+  {
+    id: 10, icon: "🧩", title: "Trouble du spectre autistique", color: C.purplePale, border: C.purple,
+    symptomes: ["Difficultés dans les interactions sociales", "Intérêts restreints et intenses", "Besoin de routines", "Hypersensibilité sensorielle", "Communication différente"],
+    traitements: ["Accompagnement éducatif adapté", "Ergothérapie et orthophonie", "Aménagements sensoriels du quotidien"],
+    ressources: ["Autisme France", "Centre Ressources Autisme (CRA)", "GNCRA — gncra.fr"],
+  },
+  {
+    id: 11, icon: "😨", title: "Trouble panique", color: C.orangePale, border: C.orange,
+    symptomes: ["Attaques de panique soudaines", "Palpitations et sensation d'étouffement", "Peur de mourir ou de devenir fou", "Peur d'avoir une nouvelle crise", "Évitement des lieux publics"],
+    traitements: ["TCC (Thérapie Cognitive et Comportementale)", "Techniques de respiration contrôlée", "ISRS si nécessaire"],
+    ressources: ["Médecin traitant", "Psycom.fr", "Exercices de respiration dans Heïdi"],
+  },
+  {
+    id: 12, icon: "🔥", title: "Burn-out — Épuisement professionnel", color: C.pinkPale, border: C.pink,
+    symptomes: ["Épuisement physique et émotionnel", "Cynisme envers le travail", "Sentiment d'inefficacité", "Troubles du sommeil", "Irritabilité et isolement"],
+    traitements: ["Arrêt de travail et repos", "Psychothérapie de soutien", "Réaménagement des conditions de travail"],
+    ressources: ["Médecine du travail", "Souffrance et Travail — souffrance-et-travail.com", "Médecin traitant"],
+  },
+  {
+    id: 13, icon: "🍷", title: "Addictions", color: C.greenPale, border: C.green,
+    symptomes: ["Perte de contrôle sur la consommation", "Envie irrépressible (craving)", "Poursuite malgré les conséquences", "Tolérance croissante", "Symptômes de sevrage"],
+    traitements: ["Consultation en addictologie (CSAPA)", "Groupes d'entraide", "Traitement de substitution si indiqué"],
+    ressources: ["Drogues Info Service — 0 800 23 13 13", "Alcool Info Service — 0 980 980 930", "Tabac Info Service — 39 89"],
+  },
+  {
+    id: 14, icon: "😶‍🌫️", title: "Phobie sociale", color: C.yellowPale, border: C.yellow,
+    symptomes: ["Peur intense du regard des autres", "Évitement des situations sociales", "Rougissements et tremblements", "Peur de l'humiliation", "Anticipation anxieuse"],
+    traitements: ["TCC (Thérapie Cognitive et Comportementale) en groupe", "Exposition progressive", "Entraînement aux habiletés sociales"],
+    ressources: ["Psycom.fr", "Psychologue spécialisé TCC", "Groupes d'affirmation de soi"],
+  },
+  {
+    id: 15, icon: "🌫️", title: "Dépression saisonnière", color: C.purplePale, border: C.purple,
+    symptomes: ["Baisse d'humeur d'octobre à mars", "Fatigue et hypersomnie", "Envie de sucre augmentée", "Perte de motivation", "Retour à la normale au printemps"],
+    traitements: ["Luminothérapie (10 000 lux le matin)", "Exposition à la lumière naturelle", "Vitamine D si carence"],
+    ressources: ["Médecin traitant", "Psycom.fr", "Lampe de luminothérapie certifiée CE"],
+  },
+  {
+    id: 16, icon: "🤱", title: "Dépression post-partum", color: C.pinkPale, border: C.pink,
+    symptomes: ["Tristesse intense après l'accouchement", "Difficulté à créer du lien avec le bébé", "Culpabilité écrasante", "Épuisement au-delà de la fatigue normale", "Pensées angoissantes"],
+    traitements: ["Suivi par sage-femme ou psychologue périnatal", "Psychothérapie de soutien", "Antidépresseurs compatibles avec l'allaitement"],
+    ressources: ["Maman Blues — maman-blues.fr", "PMI de ton secteur", "Sage-femme libérale"],
+  },
+  {
+    id: 17, icon: "😴", title: "Troubles du sommeil", color: C.greenPale, border: C.green,
+    symptomes: ["Difficulté à s'endormir", "Réveils nocturnes fréquents", "Réveil précoce", "Sommeil non réparateur", "Somnolence en journée"],
+    traitements: ["TCC de l'insomnie (TCC-I)", "Hygiène de sommeil et rituels", "Éviter les somnifères au long cours"],
+    ressources: ["Réseau Morphée — reseau-morphee.fr", "Centre du sommeil", "Médecin traitant"],
+  },
+  {
+    id: 18, icon: "💔", title: "Deuil et deuil compliqué", color: C.orangePale, border: C.orange,
+    symptomes: ["Chagrin intense et persistant", "Difficulté à accepter la perte", "Sentiment que la vie n'a plus de sens", "Isolement social", "Douleur qui ne s'atténue pas avec le temps"],
+    traitements: ["Psychothérapie du deuil", "Groupes de parole entre endeuillés", "Soutien de l'entourage"],
+    ressources: ["Vivre son deuil — vivresondeuil.asso.fr", "Empreintes — 01 42 38 08 08", "Psychologue spécialisé deuil"],
   },
 ];
 
@@ -241,6 +408,7 @@ function Icon({ name, size = 28, color = "currentColor" }) {
     logout: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>,
     lock: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>,
     trash: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg>,
+    building: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="9" y1="7" x2="9" y2="7"/><line x1="15" y1="7" x2="15" y2="7"/><line x1="9" y1="12" x2="9" y2="12"/><line x1="15" y1="12" x2="15" y2="12"/><path d="M10 22v-4h4v4"/></svg>,
     info: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>,
   };
   return icons[name] || null;
@@ -477,6 +645,7 @@ function AvatarSelector({ onClose, currentAvatar, onSelect }) {
 function HomeScreen({ setScreen, quests, coins, user, currentAvatar, setCurrentAvatar }) {
   const [showAvatarSelector, setShowAvatarSelector] = useState(false);
   const done = quests.filter(q => q.done).length;
+  const phraseDuJour = PHRASES_ACCUEIL[new Date().getDate() % PHRASES_ACCUEIL.length];
   return (
     <div style={{ padding: "20px 16px" }}>
       {/* Header */}
@@ -558,11 +727,14 @@ function HomeScreen({ setScreen, quests, coins, user, currentAvatar, setCurrentA
         </Card>
       </div>
 
-      {/* Conseil */}
-      <Card style={{ background: C.purplePale, border: "none" }}>
-        <p style={{ margin: 0, fontSize: 14, color: C.text, lineHeight: 1.7 }}>
-          ✨ <strong>Se lever le matin, c'est déjà beaucoup.</strong> Cette appli ne récompense pas la performance. Elle valorise ta présence, tes petits pas, et ta persévérance.
-        </p>
+      {/* Phrase d'accueil du jour */}
+      <Card style={{ background: `linear-gradient(135deg, ${C.purplePale}, ${C.greenPale})`, border: "none" }}>
+        <div style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
+          <span style={{ fontSize: 20, flexShrink: 0 }}>✨</span>
+          <p style={{ margin: 0, fontSize: 14, color: C.text, lineHeight: 1.7 }}>
+            <strong>{phraseDuJour.titre}</strong> {phraseDuJour.texte}
+          </p>
+        </div>
       </Card>
 
       {showAvatarSelector && (
@@ -1965,7 +2137,7 @@ function ResourcesScreen({ onBack, setScreen, setFiche }) {
       <div style={{ fontSize: 22, fontWeight: 800, color: C.text }}>Ressources 📚</div>
       <div style={{ fontSize: 13, color: C.muted, marginBottom: 16 }}>Informations validées par des professionnels</div>
       <div style={{ display: "flex", gap: 8, marginBottom: 20, flexWrap: "wrap" }}>
-        {["fiches", "médicaments", "droits"].map(t => (
+        {["fiches", "médicaments", "aide sociale", "droits"].map(t => (
           <button key={t} onClick={() => setTab(t)} style={{ padding: "7px 14px", borderRadius: 20, border: "none", background: tab === t ? C.purple : C.border, color: tab === t ? "#fff" : C.muted, fontWeight: 700, fontSize: 12, cursor: "pointer", textTransform: "capitalize" }}>
             {t}
           </button>
@@ -2002,6 +2174,66 @@ function ResourcesScreen({ onBack, setScreen, setFiche }) {
           ))}
           <Card style={{ background: C.purplePale, border: "none" }}>
             <p style={{ margin: 0, fontSize: 13, color: C.text }}>💊 Ces fiches sont informatives. Ne modifiez jamais un traitement sans votre médecin.</p>
+          </Card>
+        </div>
+      )}
+
+      {tab === "aide sociale" && (
+        <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+          <Card style={{ background: "#E0EAF8", border: "none" }}>
+            <p style={{ margin: 0, fontSize: 13, color: C.text, lineHeight: 1.7 }}>
+              🤝 <strong>Tu n'as pas à te débrouiller seul·e.</strong> Ces professionnels sont là pour t'accompagner gratuitement dans tes démarches, y compris pour monter un dossier MDPH.
+            </p>
+          </Card>
+
+          {AIDE_SOCIALE.map((cat, i) => (
+            <Card key={i} style={{ background: cat.bg, border: `1px solid ${cat.couleur}33` }}>
+              <div style={{ display: "flex", alignItems: "flex-start", gap: 12, marginBottom: 10 }}>
+                <div style={{ width: 40, height: 40, borderRadius: 12, background: "#fff", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                  <Icon name={cat.icone} size={20} color={cat.couleur} />
+                </div>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontWeight: 800, color: C.text, fontSize: 14, lineHeight: 1.3 }}>{cat.categorie}</div>
+                </div>
+              </div>
+
+              <p style={{ margin: "0 0 12px", fontSize: 13, color: C.muted, lineHeight: 1.6 }}>{cat.desc}</p>
+
+              {/* Contacts */}
+              <div style={{ background: "#fff", borderRadius: 12, padding: "4px 12px", marginBottom: 10 }}>
+                {cat.contacts.map((ct, j) => (
+                  <div key={j} style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 0", borderBottom: j < cat.contacts.length - 1 ? `1px solid ${C.border}` : "none" }}>
+                    <div style={{ flex: 1 }}>
+                      <div style={{ fontWeight: 700, color: C.text, fontSize: 13 }}>{ct.nom}</div>
+                      <div style={{ fontSize: 11, color: C.muted }}>{ct.detail}</div>
+                      {ct.lien && <div style={{ fontSize: 11, color: cat.couleur, fontWeight: 600, marginTop: 2 }}>🔗 {ct.lien}</div>}
+                    </div>
+                    {ct.tel && (
+                      <a href={"tel:" + ct.tel.replace(/ /g, "")} style={{ textDecoration: "none", flexShrink: 0 }}>
+                        <div style={{ background: cat.couleur, color: "#fff", borderRadius: 10, padding: "6px 11px", fontSize: 11, fontWeight: 700 }}>
+                          📞 {ct.tel}
+                        </div>
+                      </a>
+                    )}
+                  </div>
+                ))}
+              </div>
+
+              {/* Ce qu'ils peuvent faire */}
+              <div style={{ fontSize: 11, fontWeight: 700, color: cat.couleur, marginBottom: 6, letterSpacing: 0.5 }}>ILS PEUVENT T'AIDER À</div>
+              {cat.aide.map((a, k) => (
+                <div key={k} style={{ fontSize: 12.5, color: C.text, padding: "3px 0", display: "flex", gap: 6 }}>
+                  <span style={{ color: cat.couleur, fontWeight: 700 }}>✓</span>
+                  <span>{a}</span>
+                </div>
+              ))}
+            </Card>
+          ))}
+
+          <Card style={{ background: "#FFF8E1", border: `1px solid ${C.yellow}88` }}>
+            <p style={{ margin: 0, fontSize: 13, color: "#795548", lineHeight: 1.7 }}>
+              💡 <strong>Conseil :</strong> pour un dossier MDPH, commence par le certificat médical (Cerfa 15695*01) rempli par ton médecin ou psychiatre. C'est la pièce la plus importante — sans lui, le dossier n'avance pas.
+            </p>
           </Card>
         </div>
       )}
